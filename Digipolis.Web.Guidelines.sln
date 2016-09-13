@@ -12,7 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3445CDEB-6D1
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Digipolis.Web.Guidelines", "src\Digipolis.Web.Guidelines\Digipolis.Web.Guidelines.xproj", "{68A1B13C-570E-4149-B34C-55722CD5AC47}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Digipolis.Web.Guidelines.Api", "src\Digipolis.Web.Guidelines.Api\Digipolis.Web.Guidelines.Api.xproj", "{68798A71-C44A-48CE-8FD9-CEA75EE3299C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{3B229DD3-199C-408B-9280-3AF21B81CE1B}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Digipolis.Web.Guidelines.Api", "samples\Digipolis.Web.Guidelines.Api\Digipolis.Web.Guidelines.Api.xproj", "{68798A71-C44A-48CE-8FD9-CEA75EE3299C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{68A1B13C-570E-4149-B34C-55722CD5AC47} = {3445CDEB-6D15-45DF-BF15-4AA50089BAE3}
-		{68798A71-C44A-48CE-8FD9-CEA75EE3299C} = {3445CDEB-6D15-45DF-BF15-4AA50089BAE3}
+		{68798A71-C44A-48CE-8FD9-CEA75EE3299C} = {3B229DD3-199C-408B-9280-3AF21B81CE1B}
 	EndGlobalSection
 EndGlobal
