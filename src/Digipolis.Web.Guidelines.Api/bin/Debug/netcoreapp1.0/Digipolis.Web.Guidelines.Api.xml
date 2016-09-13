@@ -4,7 +4,17 @@
         <name>Digipolis.Web.Guidelines.Api</name>
     </assembly>
     <members>
-        <member name="T:StarterKit.SwashBuckle.Api.Controllers.ValuesController">
+        <member name="T:Digipolis.Web.Guidelines.Api.Configuration.InfoVersion1">
+            <summary>
+            Contains all information for V1 of the API
+            </summary>
+        </member>
+        <member name="T:Digipolis.Web.Guidelines.Api.Configuration.InfoVersion2">
+            <summary>
+            Contains all information for V2 of the API
+            </summary>
+        </member>
+        <member name="T:Digipolis.Web.Guidelines.Api.Controllers.ValuesController">
             <summary>
             test
             </summary>
@@ -15,7 +25,7 @@
             
             </remarks>
         </member>
-        <member name="M:StarterKit.SwashBuckle.Api.Controllers.ValuesController.Get(Digipolis.Web.Guidelines.Models.Query)">
+        <member name="M:Digipolis.Web.Guidelines.Api.Controllers.ValuesController.Get(Digipolis.Web.Guidelines.Models.Query)">
             <summary>
             Get all values 
             </summary>
@@ -28,21 +38,21 @@
             <param name="queryOptions">Query options from uri</param>
             <returns>An array of value objects</returns>
         </member>
-        <member name="M:StarterKit.SwashBuckle.Api.Controllers.ValuesController.Get(System.Int32)">
+        <member name="M:Digipolis.Web.Guidelines.Api.Controllers.ValuesController.Get(System.Int32)">
             <summary>
             Get a value by id
             </summary>
             <param name="id">The id of the value</param>
             <returns>A value object</returns>
         </member>
-        <member name="M:StarterKit.SwashBuckle.Api.Controllers.ValuesController.Post(StarterKit.SwashBuckle.Api.Models.ValueDto)">
+        <member name="M:Digipolis.Web.Guidelines.Api.Controllers.ValuesController.Post(Digipolis.Web.Guidelines.Api.Models.ValueDto)">
             <summary>
             Add a new value
             </summary>
             <param name="value">A value object</param>
             <returns>The created value object</returns>
         </member>
-        <member name="M:StarterKit.SwashBuckle.Api.Controllers.ValuesController.Put(System.Int32,StarterKit.SwashBuckle.Api.Models.ValueDto)">
+        <member name="M:Digipolis.Web.Guidelines.Api.Controllers.ValuesController.Put(System.Int32,Digipolis.Web.Guidelines.Api.Models.ValueDto)">
             <summary>
             Update an existing value object
             </summary>
@@ -50,94 +60,94 @@
             <param name="value">The updated value object</param>
             <returns></returns>
         </member>
-        <member name="M:StarterKit.SwashBuckle.Api.Controllers.ValuesController.Delete(System.Int32)">
+        <member name="M:Digipolis.Web.Guidelines.Api.Controllers.ValuesController.Delete(System.Int32)">
             <summary>
             Delete a value by it's Id
             </summary>
             <param name="id">The value's Id</param>
             <returns></returns>
         </member>
-        <member name="T:StarterKit.SwashBuckle.Api.Data.Entiteiten.Value">
+        <member name="T:Digipolis.Web.Guidelines.Api.Data.Entiteiten.Value">
             <summary>
             A value type
             </summary>
         </member>
-        <member name="P:StarterKit.SwashBuckle.Api.Data.Entiteiten.Value.Id">
+        <member name="P:Digipolis.Web.Guidelines.Api.Data.Entiteiten.Value.Id">
             <summary>
             Id of the value type
             </summary>
         </member>
-        <member name="P:StarterKit.SwashBuckle.Api.Data.Entiteiten.Value.Name">
+        <member name="P:Digipolis.Web.Guidelines.Api.Data.Entiteiten.Value.Name">
             <summary>
             Unique name to identify a value type
             </summary>
         </member>
-        <member name="P:StarterKit.SwashBuckle.Api.Data.Entiteiten.Value.ValueType">
+        <member name="P:Digipolis.Web.Guidelines.Api.Data.Entiteiten.Value.ValueType">
             <summary>
             The type of Value
             </summary>
         </member>
-        <member name="P:StarterKit.SwashBuckle.Api.Data.Entiteiten.Value.CreationDate">
+        <member name="P:Digipolis.Web.Guidelines.Api.Data.Entiteiten.Value.CreationDate">
             <summary>
             Creation date and time
             </summary>
         </member>
-        <member name="T:StarterKit.SwashBuckle.Api.Data.Entiteiten.ValueType">
+        <member name="T:Digipolis.Web.Guidelines.Api.Data.Entiteiten.ValueType">
             <summary>
             Type of value
             </summary>
         </member>
-        <member name="F:StarterKit.SwashBuckle.Api.Data.Entiteiten.ValueType.Store">
+        <member name="F:Digipolis.Web.Guidelines.Api.Data.Entiteiten.ValueType.Store">
             <summary>
             Store type
             </summary>
         </member>
-        <member name="F:StarterKit.SwashBuckle.Api.Data.Entiteiten.ValueType.Unknown">
+        <member name="F:Digipolis.Web.Guidelines.Api.Data.Entiteiten.ValueType.Unknown">
             <summary>
             Unknown type
             </summary>
         </member>
-        <member name="T:StarterKit.SwashBuckle.Api.Models.ValueDto">
+        <member name="T:Digipolis.Web.Guidelines.Api.Models.ValueDto">
             <summary>
             A value type
             </summary>
         </member>
-        <member name="P:StarterKit.SwashBuckle.Api.Models.ValueDto.Id">
+        <member name="P:Digipolis.Web.Guidelines.Api.Models.ValueDto.Id">
             <summary>
             Id of the value type
             </summary>
         </member>
-        <member name="P:StarterKit.SwashBuckle.Api.Models.ValueDto.Name">
+        <member name="P:Digipolis.Web.Guidelines.Api.Models.ValueDto.Name">
             <summary>
             Unique name to identify a value type
             </summary>
         </member>
-        <member name="P:StarterKit.SwashBuckle.Api.Models.ValueDto.ValueType">
+        <member name="P:Digipolis.Web.Guidelines.Api.Models.ValueDto.ValueType">
             <summary>
             The type of Value
             </summary>
         </member>
-        <member name="P:StarterKit.SwashBuckle.Api.Models.ValueDto.CreationDate">
+        <member name="P:Digipolis.Web.Guidelines.Api.Models.ValueDto.CreationDate">
             <summary>
             Creation date and time
             </summary>
         </member>
-        <member name="P:StarterKit.SwashBuckle.Api.Models.ValueDto.TimeSinceCreation">
+        <member name="P:Digipolis.Web.Guidelines.Api.Models.ValueDto.TimeSinceCreation">
             <summary>
             Time since creation
             </summary>
         </member>
-        <member name="T:StarterKit.SwashBuckle.Api.Models.ValueTypeDto">
+        <member name="T:Digipolis.Web.Guidelines.Api.Models.ValueTypeDto">
             <summary>
             Type of value
             </summary>
         </member>
-        <member name="F:StarterKit.SwashBuckle.Api.Models.ValueTypeDto.Store">
+        <member name="F:Digipolis.Web.Guidelines.Api.Models.ValueTypeDto.Store">
             <summary>
             Store type
             </summary>
         </member>
-        <member name="F:StarterKit.SwashBuckle.Api.Models.ValueTypeDto.Unknown">
+        <member name="F:Digipolis.Web.Guidelines.Api.Models.ValueTypeDto.Unknown">
             <summary>
             Unknown type
             </summary>

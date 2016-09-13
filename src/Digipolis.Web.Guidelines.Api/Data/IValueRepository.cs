@@ -1,13 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Digipolis.Errors;
+using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
 using Digipolis.Web.Guidelines.Models;
-using Digipolis.Web.Guidelines.Paging;
-using StarterKit.SwashBuckle.Api.Data.Entiteiten;
-using StarterKit.SwashBuckle.Api.Models;
 
-namespace StarterKit.SwashBuckle.Api.Data
+namespace Digipolis.Web.Guidelines.Api.Data
 {
     public interface IValueRepository
     {

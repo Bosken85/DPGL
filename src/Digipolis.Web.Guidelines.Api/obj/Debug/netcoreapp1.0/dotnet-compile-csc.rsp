@@ -185,6 +185,9 @@
 -resource:"W:\GitHub\DPGL\src\Digipolis.Web.Guidelines.Api\obj\Debug\netcoreapp1.0\Digipolis.Web.Guidelines.Apidotnet-compile.deps.json",Digipolis.Web.Guidelines.Api.deps.json
 "W:\GitHub\DPGL\src\Digipolis.Web.Guidelines.Api\Program.cs"
 "W:\GitHub\DPGL\src\Digipolis.Web.Guidelines.Api\Startup.cs"
+"W:\GitHub\DPGL\src\Digipolis.Web.Guidelines.Api\Configuration\Constants.cs"
+"W:\GitHub\DPGL\src\Digipolis.Web.Guidelines.Api\Configuration\InfoVersion1.cs"
+"W:\GitHub\DPGL\src\Digipolis.Web.Guidelines.Api\Configuration\InfoVersion2.cs"
 "W:\GitHub\DPGL\src\Digipolis.Web.Guidelines.Api\Controllers\ValuesController.cs"
 "W:\GitHub\DPGL\src\Digipolis.Web.Guidelines.Api\Data\IValueRepository.cs"
 "W:\GitHub\DPGL\src\Digipolis.Web.Guidelines.Api\Data\ValueRepository.cs"

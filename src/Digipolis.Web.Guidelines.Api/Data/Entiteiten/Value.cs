@@ -1,8 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using ValueType = StarterKit.SwashBuckle.Api.Data.Entiteiten.ValueType;
 
-namespace StarterKit.SwashBuckle.Api.Data.Entiteiten
+namespace Digipolis.Web.Guidelines.Api.Data.Entiteiten
 {
     /// <summary>
     /// A value type

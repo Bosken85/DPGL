@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using AutoMapper;
-using Digipolis.Web.Guidelines;
+using Digipolis.Web.Guidelines.Api.Data;
+using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
+using Digipolis.Web.Guidelines.Api.Models;
 using Digipolis.Web.Guidelines.Models;
-using Digipolis.Web.Guidelines.Paging;
-using StarterKit.SwashBuckle.Api.Data;
-using StarterKit.SwashBuckle.Api.Data.Entiteiten;
-using StarterKit.SwashBuckle.Api.Models;
 
-namespace StarterKit.SwashBuckle.Api.Logic
+namespace Digipolis.Web.Guidelines.Api.Logic
 {
     public class ValueLogic : IValueLogic
     {

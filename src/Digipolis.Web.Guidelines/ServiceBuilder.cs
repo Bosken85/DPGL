@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Digipolis.Web.Guidelines.JsonConverters;
 using Microsoft.AspNetCore.Http;
@@ -13,8 +14,11 @@ using Swashbuckle.SwaggerGen.Application;
 using System.Linq;
 using Digipolis.Web.Guidelines.Paging;
 using Digipolis.Web.Guidelines.Swagger;
+using Digipolis.Web.Guidelines.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
 using Swashbuckle.Swagger.Model;
 
 namespace Digipolis.Web.Guidelines
@@ -35,6 +39,7 @@ namespace Digipolis.Web.Guidelines
             {
                 options.Filters.Insert(0, new ConsumesAttribute("application/json"));
                 options.Filters.Insert(1, new ProducesAttribute("application/json"));
+                options.UseCentralRoutePrefix(new RouteAttribute("{apiVersion}"));
             }).AddJsonOptions(x =>
             {
                 x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -72,6 +77,11 @@ namespace Digipolis.Web.Guidelines
             return builder;
         }
 
+        public static void UseCentralRoutePrefix(this MvcOptions opts, IRouteTemplateProvider routeAttribute)
+        {
+            opts.Conventions.Insert(0, new RouteConvention(routeAttribute));
+        }
+
         public static IServiceCollection ConfigureSwaggerGenDefaults(this IServiceCollection services)
         {
             return services.Configure<SwaggerGenOptions>(x =>
@@ -85,6 +95,12 @@ namespace Digipolis.Web.Guidelines
             });
         }
 
+        public static void MultipleApiVersions<TInfo>(this SwaggerGenOptions options, IEnumerable<TInfo> apiVersions)
+            where TInfo : Info
+        {
+            options.MultipleApiVersions(apiVersions, ResolveVersionSupportByVersionsConstraint);
+        }
+
         public static IApplicationBuilder UseDigipolis(this IApplicationBuilder app)
         {
             var httpContextAccessor = app.ApplicationServices.GetService<IActionContextAccessor>();
@@ -92,7 +108,7 @@ namespace Digipolis.Web.Guidelines
             return app;
         }
 
-        public static bool ResolveVersionSupportByVersionsConstraint(ApiDescription apiDesc, string version)
+        private static bool ResolveVersionSupportByVersionsConstraint(ApiDescription apiDesc, string version)
         {
             var versionAttribute = apiDesc.ActionDescriptor.ActionConstraints.OfType<VersionsAttribute>().FirstOrDefault();
             return versionAttribute == null || versionAttribute.AcceptedVersions.Contains(version);

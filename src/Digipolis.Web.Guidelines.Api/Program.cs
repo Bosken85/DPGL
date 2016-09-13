@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
 
-namespace StarterKit.SwashBuckle.Api
+namespace Digipolis.Web.Guidelines.Api
 {
     public class Program
     {

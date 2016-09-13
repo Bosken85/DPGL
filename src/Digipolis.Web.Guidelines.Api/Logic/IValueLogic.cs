@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
+using Digipolis.Web.Guidelines.Api.Models;
 using Digipolis.Web.Guidelines.Models;
-using Digipolis.Web.Guidelines.Paging;
-using StarterKit.SwashBuckle.Api.Data.Entiteiten;
-using StarterKit.SwashBuckle.Api.Models;
 
-namespace StarterKit.SwashBuckle.Api.Logic
+namespace Digipolis.Web.Guidelines.Api.Logic
 {
     public interface IValueLogic
     {

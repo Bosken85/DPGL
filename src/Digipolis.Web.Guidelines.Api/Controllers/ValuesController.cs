@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using Digipolis.Errors.Exceptions;
 using Digipolis.Web.Filters;
-using Digipolis.Web.Guidelines;
+using Digipolis.Web.Guidelines.Api.Configuration;
+using Digipolis.Web.Guidelines.Api.Logic;
+using Digipolis.Web.Guidelines.Api.Models;
 using Digipolis.Web.Guidelines.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StarterKit.SwashBuckle.Api.Logic;
-using StarterKit.SwashBuckle.Api.Models;
 
-namespace StarterKit.SwashBuckle.Api.Controllers
+namespace Digipolis.Web.Guidelines.Api.Controllers
 {
     /// <summary>
     /// test
@@ -21,7 +21,7 @@ namespace StarterKit.SwashBuckle.Api.Controllers
     /// <a href="https://www.google.be" target="_blank">Google</a>
     /// 
     /// </remarks>
-    [Route("/{apiVersion}/[controller]")]
+    [Route("[controller]")]
     [Authorize]
     public class ValuesController : Controller
     {
@@ -48,7 +48,7 @@ namespace StarterKit.SwashBuckle.Api.Controllers
         [HttpGet()]
         [ProducesResponseType(typeof(PagedResult<ValueDto>), 200)]
         [AllowAnonymous]
-        [Versions("v1", "v2")]
+        [Versions(Settings.Versions.V1, Settings.Versions.V2)]
         public IActionResult Get([FromQuery]Query queryOptions)
         {
             try
@@ -73,7 +73,7 @@ namespace StarterKit.SwashBuckle.Api.Controllers
         [ProducesResponseType(typeof(ValueDto), 200)]
         [ProducesResponseType(typeof(ValueDto), 401)]
         [AllowAnonymous]
-        [Versions("v1", "v2")]
+        [Versions(Settings.Versions.V1, Settings.Versions.V2)]
         public IActionResult Get(int id)
         {
             try
@@ -100,7 +100,7 @@ namespace StarterKit.SwashBuckle.Api.Controllers
         [ValidateModelState]
         [ProducesResponseType(typeof(ValueDto), 201)]
         [AllowAnonymous]
-        [Versions("v1", "v2")]
+        [Versions(Settings.Versions.V1, Settings.Versions.V2)]
         public IActionResult Post([FromBody, Required] ValueDto value)
         {
             try
@@ -123,7 +123,7 @@ namespace StarterKit.SwashBuckle.Api.Controllers
         [HttpPut("{id}")]
         [ValidateModelState]
         [AllowAnonymous]
-        [Versions("v1", "v2")]
+        [Versions(Settings.Versions.V1, Settings.Versions.V2)]
         public IActionResult Put(int id, [FromBody, Required] ValueDto value)
         {
             try
@@ -147,7 +147,7 @@ namespace StarterKit.SwashBuckle.Api.Controllers
         /// <param name="id">The value's Id</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [Versions("v2")]
+        [Versions(Settings.Versions.V2)]
         public IActionResult Delete(int id)
         {
             try

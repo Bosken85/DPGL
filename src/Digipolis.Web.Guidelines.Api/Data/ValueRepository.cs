@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Digipolis.Errors.Exceptions;
-using Digipolis.Web.Guidelines;
+using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
 using Digipolis.Web.Guidelines.Models;
-using Digipolis.Web.Guidelines.Paging;
-using StarterKit.SwashBuckle.Api.Data.Entiteiten;
-using StarterKit.SwashBuckle.Api.Models;
-using ValueType = StarterKit.SwashBuckle.Api.Data.Entiteiten.ValueType;
+using ValueType = Digipolis.Web.Guidelines.Api.Data.Entiteiten.ValueType;
 
-namespace StarterKit.SwashBuckle.Api.Data
+namespace Digipolis.Web.Guidelines.Api.Data
 {
     public class ValueRepository : IValueRepository
     {

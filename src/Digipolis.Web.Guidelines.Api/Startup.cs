@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using AutoMapper;
+using Digipolis.Web.Guidelines.Api.Configuration;
+using Digipolis.Web.Guidelines.Api.Data;
+using Digipolis.Web.Guidelines.Api.Logic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.PlatformAbstractions;
-using StarterKit.SwashBuckle;
-using StarterKit.SwashBuckle.Api.Data;
-using StarterKit.SwashBuckle.Api.Logic;
-using Digipolis.Web.Guidelines;
-using AutoMapper;
 using Swashbuckle.Swagger.Model;
 
-namespace StarterKit.SwashBuckle.Api
+namespace Digipolis.Web.Guidelines.Api
 {
     public class Startup
     {
@@ -41,6 +34,7 @@ namespace StarterKit.SwashBuckle.Api
             services.AddMvc().AddMvcDefaults().AddMvcOptions(x =>
             {
                 //Override default settings here
+                //...
             });
 
             // Inject an implementation of ISwaggerProvider with defaulted settings applied
@@ -48,15 +42,25 @@ namespace StarterKit.SwashBuckle.Api
             services.ConfigureSwaggerGenDefaults().ConfigureSwaggerGen(x =>
             {
                 //Override default settings here
+                //...
 
                 //Specify Api Versions here
-                x.MultipleApiVersions(new[] {
-                        new Info { Version = "v1", Title = "API V1" },
-                        new Info { Version = "v2", Title = "API V2" }
+                x.MultipleApiVersions(new Info[] { new Info
+                {
+                    //Add Inline version
+                    Version = Settings.Versions.V1,
+                    Title = "API V1",
+                    Description = "Description for V1 of the API",
+                    Contact = new Contact { Email = "info@digipolis.be", Name = "Digipolis", Url = "https://www.digipolis.be" },
+                    TermsOfService = "https://www.digipolis.be/tos",
+                    License = new License
+                    {
+                        Name = "My License",
+                        Url = "https://www.digipolis.be/licensing"
                     },
-                    //Use version control
-                    ServiceBuilder.ResolveVersionSupportByVersionsConstraint
-                );
+                },
+                //Add version through inheritence
+                new InfoVersion2()});
             });
 
             //Register Dependencies for example project
@@ -81,6 +85,7 @@ namespace StarterKit.SwashBuckle.Api
             // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
             app.UseSwaggerUi();
 
+            // Enable Digipolis Features
             app.UseDigipolis();
 
         }

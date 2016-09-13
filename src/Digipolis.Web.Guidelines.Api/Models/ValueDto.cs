@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using ValueType = StarterKit.SwashBuckle.Api.Data.Entiteiten.ValueType;
 
-namespace StarterKit.SwashBuckle.Api.Models
+namespace Digipolis.Web.Guidelines.Api.Models
 {
     /// <summary>
     /// A value type

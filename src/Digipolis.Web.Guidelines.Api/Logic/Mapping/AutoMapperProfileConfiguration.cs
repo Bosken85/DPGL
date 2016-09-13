@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using AutoMapper;
+using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
+using Digipolis.Web.Guidelines.Api.Models;
 using Digipolis.Web.Guidelines.Models;
-using Digipolis.Web.Guidelines.Paging;
-using StarterKit.SwashBuckle.Api.Data.Entiteiten;
-using StarterKit.SwashBuckle.Api.Models;
 
-namespace StarterKit.SwashBuckle.Api.Logic.Mapping
+namespace Digipolis.Web.Guidelines.Api.Logic.Mapping
 {
     public class AutoMapperProfileConfiguration : Profile
     {

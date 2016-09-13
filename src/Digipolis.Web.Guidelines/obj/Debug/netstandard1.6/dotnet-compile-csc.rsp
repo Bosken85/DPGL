@@ -167,4 +167,5 @@
 "W:\GitHub\DPGL\src\Digipolis.Web.Guidelines\Swagger\PagedResultSchemaFilter.cs"
 "W:\GitHub\DPGL\src\Digipolis.Web.Guidelines\Swagger\SetVersionInPaths.cs"
 "W:\GitHub\DPGL\src\Digipolis.Web.Guidelines\Versioning\VersionConstraint.cs"
+"W:\GitHub\DPGL\src\Digipolis.Web.Guidelines\Versioning\VersionRouteConvention.cs"
 "W:\GitHub\DPGL\src\Digipolis.Web.Guidelines\Versioning\VersionsAttribute.cs"

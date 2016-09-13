@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace StarterKit.SwashBuckle.Api.Models
+﻿namespace Digipolis.Web.Guidelines.Api.Models
 {
     /// <summary>
     /// Type of value
