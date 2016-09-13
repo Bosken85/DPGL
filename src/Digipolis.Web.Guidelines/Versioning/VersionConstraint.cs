@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 
-namespace Digipolis.Web.Guidelines.Versioning
+namespace Digipolis.Web.Guidelines
 {
     public class VersionConstraint : IActionConstraint
     {
@@ -16,7 +16,7 @@ namespace Digipolis.Web.Guidelines.Versioning
 
         public bool Accept(ActionConstraintContext context)
         {
-            var versionValue = context.RouteContext.RouteData.Values["version"];
+            var versionValue = context.RouteContext.RouteData.Values["apiVersion"];
             if (versionValue == null) return false;
 
             return _acceptedVersions.Contains(versionValue.ToString());

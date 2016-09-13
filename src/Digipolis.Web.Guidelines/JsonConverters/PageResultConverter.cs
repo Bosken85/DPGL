@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Digipolis.Web.Guidelines.JsonConverters
 {
-    public class PageResultConverter : JsonConverter
+    internal class PageResultConverter : JsonConverter
     {
         public override bool CanRead { get; } = false;
 
@@ -21,19 +21,13 @@ namespace Digipolis.Web.Guidelines.JsonConverters
             var generic = typeof(PagedResult<>).MakeGenericType(type);
             dynamic obj = Convert.ChangeType(value, generic) ;
 
-            var links = obj.Links as IDictionary<string, ILink>;
+            var links = obj.Links as PagedResultLinks;
             var data = obj.Data as IEnumerable;
             var page = obj.Page as Page;
 
             writer.WriteStartObject();
                 writer.WritePropertyName("_links");
-                writer.WriteStartObject();
-                    foreach (var link in links)
-                    {
-                        writer.WritePropertyName(link.Key.ToCamelCase());
-                        serializer.Serialize(writer, link.Value);
-                    }
-                writer.WriteEndObject();
+                serializer.Serialize(writer, links);
                 writer.WritePropertyName("_embedded");
                     writer.WriteStartObject();
                         writer.WritePropertyName("resourceList");

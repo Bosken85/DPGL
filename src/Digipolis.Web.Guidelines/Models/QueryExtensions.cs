@@ -30,29 +30,29 @@ namespace Digipolis.Web.Guidelines.Models
 
             values["Page"] = 1;
             var first = UrlHelper.AbsoluteAction(actionName, controllerName, values);
-            result.Links.Add("first", new Link(first));
+            result.Links.First = new Link(first);
 
             values["Page"] = query.Page - 1;
             if (query.Page - 1 > 0)
             {
                 var previous = UrlHelper.AbsoluteAction(actionName, controllerName, values);
-                result.Links.Add("prev", new Link(previous));
+                result.Links.Previous = new Link(previous);
             }
             
             values["Page"] = query.Page;
             var self = UrlHelper.AbsoluteAction(actionName, controllerName, values);
-            result.Links.Add("self", new Link(self));
+            result.Links.Self = new Link(self);
 
             values["Page"] = query.Page + 1;
             if (query.Page + 1 < result.Page.TotalPages)
             {
                 var next = UrlHelper.AbsoluteAction(actionName, controllerName, values);
-                result.Links.Add("next", new Link(next));
+                result.Links.Next = new Link(next);
             }
 
             values["Page"] = result.Page.TotalPages;
             var last = UrlHelper.AbsoluteAction(actionName, controllerName, values);
-            result.Links.Add("last", new Link(last));
+            result.Links.Last = new Link(last);
 
             return result;
         }
@@ -80,29 +80,29 @@ namespace Digipolis.Web.Guidelines.Models
 
             values["Page"] = 1;
             var first = UrlHelper.AbsoluteRoute(routeName, values);
-            result.Links.Add("first", new Link(first));
+            result.Links.First = new Link(first);
 
             values["Page"] = query.Page - 1;
             if (query.Page - 1 > 0)
             {
                 var previous = UrlHelper.AbsoluteRoute(routeName, values);
-                result.Links.Add("prev", new Link(previous));
+                result.Links.Previous = new Link(previous);
             }
 
             values["Page"] = query.Page;
             var self = UrlHelper.AbsoluteRoute(routeName, values);
-            result.Links.Add("self", new Link(self));
+            result.Links.Self = new Link(self);
 
             values["Page"] = query.Page + 1;
             if (query.Page + 1 < result.Page.TotalPages)
             {
                 var next = UrlHelper.AbsoluteRoute(routeName, values);
-                result.Links.Add("next", new Link(next));
+                result.Links.Next = new Link(next);
             }
 
             values["Page"] = result.Page.TotalPages;
             var last = UrlHelper.AbsoluteRoute(routeName, values);
-            result.Links.Add("last", new Link(last));
+            result.Links.Last = new Link(last);
 
             return result;
         }

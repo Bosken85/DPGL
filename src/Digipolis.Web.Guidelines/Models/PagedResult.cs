@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using Digipolis.Web.Guidelines.Paging;
+using Newtonsoft.Json;
 
 namespace Digipolis.Web.Guidelines.Models
 {
     public class PagedResult<T> where T : class, new()
     {
-        public IDictionary<string, ILink> Links { get; set; }
+        [JsonProperty(PropertyName = "_links")]
+        public PagedResultLinks Links { get; set; }
 
         public IEnumerable<T> Data { get; set; }
 
+        [JsonProperty(PropertyName = "_page")]
         public Page Page { get; set; }
 
         public PagedResult(int page, int pageSize, int totalElements, IEnumerable<T> data)
@@ -23,7 +26,7 @@ namespace Digipolis.Web.Guidelines.Models
                 TotalElements = totalElements,
                 TotalPages = (int)Math.Ceiling((double)totalElements / (double)pageSize)
             };
-            Links = new Dictionary<string, ILink>();
+            Links = new PagedResultLinks();
         }
     }
 }

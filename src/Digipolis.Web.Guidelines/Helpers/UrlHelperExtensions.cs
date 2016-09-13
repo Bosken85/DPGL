@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace Digipolis.Web.Guidelines.Helpers
 {
-    public static class UrlHelper
+    internal static class UrlHelper
     {
         private static IActionContextAccessor _httpContextAccessor;
         public static void Configure(IActionContextAccessor httpContextAccessor)

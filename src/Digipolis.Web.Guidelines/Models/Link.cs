@@ -2,7 +2,7 @@ using System;
 
 namespace Digipolis.Web.Guidelines.Models
 {
-    public class Link : ILink
+    public class Link
     {
         public Uri Href { get; set; }
 

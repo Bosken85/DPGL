@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 
-namespace Digipolis.Web.Guidelines.Versioning
+namespace Digipolis.Web.Guidelines
 {
     public class VersionsAttribute : Attribute, IActionConstraintFactory
     {

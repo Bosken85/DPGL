@@ -6,8 +6,8 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Ordina")]
-[assembly: AssemblyProduct("StarterKit.SwashBuckle")]
+[assembly: AssemblyCompany("Digipolis Antwerpen")]
+[assembly: AssemblyProduct("Digipolis.Web.Guidelines")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

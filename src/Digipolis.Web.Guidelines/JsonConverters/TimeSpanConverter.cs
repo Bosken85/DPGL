@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Digipolis.Web.Guidelines.JsonConverters
 {
-    public class TimeSpanConverter : JsonConverter
+    internal class TimeSpanConverter : JsonConverter
     {
         public override bool CanRead => true;
         public override bool CanWrite => true;
