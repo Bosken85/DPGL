@@ -1,3 +1,3 @@
-# DPGL
+# Digipolis Guideline Enforcer
 
 In Progress
