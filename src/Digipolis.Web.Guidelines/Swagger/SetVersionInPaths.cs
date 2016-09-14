@@ -35,4 +35,6 @@ namespace Digipolis.Web.Guidelines.Swagger
             operation.Parameters.Remove(versionParam);
         }
     }
+
+
 }

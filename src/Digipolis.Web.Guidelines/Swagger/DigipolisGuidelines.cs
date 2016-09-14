@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using Digipolis.Errors;
 using Digipolis.Web.Filters;
+using Digipolis.Web.Guidelines.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.Swagger.Model;
@@ -10,7 +12,7 @@ using Swashbuckle.SwaggerGen.Generator;
 
 namespace Digipolis.Web.Guidelines.Swagger
 {
-    public class DigipolisGuidelines : IOperationFilter
+    public class DigipolisGuidelines : IResponseGuidelines
     {
         public virtual void Apply(Operation operation, OperationFilterContext context)
         {
@@ -25,6 +27,7 @@ namespace Digipolis.Web.Guidelines.Swagger
             CreatedResponse(operation, context, attributes);
             OkResponse(operation, context, attributes);
             NotFoundResponse(operation, context, attributes);
+            AddReturnSchemaToVersionEndpoint(operation, context);
         }
 
         public virtual void UnauthorizedResponse(Operation operation, OperationFilterContext context, IEnumerable<Attribute> attributes, IEnumerable<Attribute> actionaAtributes)
@@ -113,6 +116,15 @@ namespace Digipolis.Web.Guidelines.Swagger
                 Description = "Not found",
                 Schema = context.SchemaRegistry.GetOrRegister(typeof(Error))
             });
+        }
+
+        public virtual void AddReturnSchemaToVersionEndpoint(Operation operation, OperationFilterContext context)
+        {
+            var operationId = context.ApiDescription.RelativePath.Contains("apiVersion") ? "ByApiVersionStatusVersionGet" : "StatusVersionGet";
+            if (!operation.OperationId.Equals(operationId)) return;
+            operation.Responses["200"].Schema = context.SchemaRegistry.GetOrRegister(typeof(VersionInfo));
+            operation.Summary = "Get the version of the application";
+            operation.Produces.Add("application/json");
         }
     }
 }

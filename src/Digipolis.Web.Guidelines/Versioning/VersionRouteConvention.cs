@@ -21,6 +21,9 @@ namespace Digipolis.Web.Guidelines.Versioning
         {
             foreach (var controller in application.Controllers)
             {
+                if (controller.Attributes.OfType<ApiExplorerSettingsAttribute>().Any(x=> x.IgnoreApi))
+                    continue;
+
                 var matchedSelectors = controller.Selectors.Where(x => x.AttributeRouteModel != null).ToList();
                 if (matchedSelectors.Any())
                 {

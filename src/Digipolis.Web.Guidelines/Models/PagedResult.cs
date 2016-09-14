@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Digipolis.Web.Guidelines.Paging;
 using Newtonsoft.Json;
 
 namespace Digipolis.Web.Guidelines.Models

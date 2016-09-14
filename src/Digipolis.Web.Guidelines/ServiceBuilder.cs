@@ -12,7 +12,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.SwaggerGen.Application;
 using System.Linq;
-using Digipolis.Web.Guidelines.Paging;
 using Digipolis.Web.Guidelines.Swagger;
 using Digipolis.Web.Guidelines.Versioning;
 using Microsoft.AspNetCore.Builder;
@@ -82,6 +81,11 @@ namespace Digipolis.Web.Guidelines
             opts.Conventions.Insert(0, new RouteConvention(routeAttribute));
         }
 
+        /// <summary>
+        /// This configures Swagger to follow the guidelines set out by Digipolis
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection ConfigureSwaggerGenDefaults(this IServiceCollection services)
         {
             return services.Configure<SwaggerGenOptions>(x =>
@@ -89,6 +93,26 @@ namespace Digipolis.Web.Guidelines
                 x.DescribeAllEnumsAsStrings();
                 x.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, PlatformServices.Default.Application.ApplicationName + ".xml"));
                 x.OperationFilter<DigipolisGuidelines>();
+                x.OperationFilter<AddFileUploadParams>();
+                x.DocumentFilter<EndPointPathsAndParamsToLower>();
+                x.DocumentFilter<SetVersionInPaths>();
+                x.SchemaFilter<PagedResultSchemaFilter>();
+            });
+        }
+
+        /// <summary>
+        /// This configures Swagger to follow the guidelines set out by Digipolis with the exception that you can override the setting made in <see cref="DigipolisGuidelines"/>
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection ConfigureSwaggerGenDefaults<TResponseGuidelines>(this IServiceCollection services) where TResponseGuidelines : DigipolisGuidelines
+        {
+            return services.Configure<SwaggerGenOptions>(x =>
+            {
+                x.DescribeAllEnumsAsStrings();
+                x.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, PlatformServices.Default.Application.ApplicationName + ".xml"));
+                x.OperationFilter<TResponseGuidelines>();
+                x.OperationFilter<AddFileUploadParams>();
                 x.DocumentFilter<EndPointPathsAndParamsToLower>();
                 x.DocumentFilter<SetVersionInPaths>();
                 x.SchemaFilter<PagedResultSchemaFilter>();

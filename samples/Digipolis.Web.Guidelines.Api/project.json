@@ -5,7 +5,6 @@
       "type": "platform"
     },
     "AutoMapper": "5.1.1",
-    "AutoMapper.Extensions.Microsoft.DependencyInjection": "1.1.0",
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
@@ -20,7 +19,9 @@
     "Swashbuckle.SwaggerUi": "6.0.0-beta902",
     //"Lohmann.HALight": "0.2.0-rc2",
     "Microsoft.EntityFrameworkCore": "1.0.0",
-    "Digipolis.Web.Guidelines": "1.0.0-*"
+    "Digipolis.Web.Guidelines": "1.0.0-*",
+    "Microsoft.AspNetCore.Http.Extensions": "1.0.0",
+    "AutoMapper.Extensions.Microsoft.DependencyInjection": "1.1.0"
   },
 
   "tools": {
@@ -34,10 +35,6 @@
         "portable-net45+win8"
       ]
     }
-  },
-
-  "commands": {
-    "efd": "StarterKit.Ef.Commands"
   },
 
   "buildOptions": {

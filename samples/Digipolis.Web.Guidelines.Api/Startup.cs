@@ -65,7 +65,9 @@ namespace Digipolis.Web.Guidelines.Api
 
             //Register Dependencies for example project
             services.AddScoped<IValueRepository, ValueRepository>();
+            services.AddScoped<IFileRepository, FileRepository>();
             services.AddScoped<IValueLogic, ValueLogic>();
+            services.AddScoped<IFileLogic, FileLogic>();
 
             //Add AutoMapper
             services.AddAutoMapper();
@@ -77,6 +79,7 @@ namespace Digipolis.Web.Guidelines.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            //app.UseStaticFiles();
             app.UseMvc();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Digipolis.Web.Guidelines.Paging
+namespace Digipolis.Web.Guidelines.Models
 {
     public class QueryModelBinder : IModelBinder
     {

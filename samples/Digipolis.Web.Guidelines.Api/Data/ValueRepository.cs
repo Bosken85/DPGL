@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Digipolis.Errors.Exceptions;
 using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
+using Digipolis.Web.Guidelines.Helpers;
 using Digipolis.Web.Guidelines.Models;
 using ValueType = Digipolis.Web.Guidelines.Api.Data.Entiteiten.ValueType;
 
@@ -29,7 +30,10 @@ namespace Digipolis.Web.Guidelines.Api.Data
         public IEnumerable<Value> GetAll(Query queryOptions, out int total)
         {
             total = Values.Count;
-            return Values.Skip((queryOptions.Page - 1)*queryOptions.PageSize).Take(queryOptions.PageSize);
+            var query = Values.AsQueryable().OrderBy(queryOptions.Sort)
+                .Skip((queryOptions.Page - 1)*queryOptions.PageSize).Take(queryOptions.PageSize);
+
+            return query;
         }
 
         public Value GetById(int id)

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Digipolis.Web.Guidelines.Helpers;
 using Digipolis.Web.Guidelines.Models;
-using Digipolis.Web.Guidelines.Paging;
 using Newtonsoft.Json;
 
 namespace Digipolis.Web.Guidelines.JsonConverters

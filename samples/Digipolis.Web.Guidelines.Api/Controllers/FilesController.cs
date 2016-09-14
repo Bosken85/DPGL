@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Digipolis.Web.Guidelines.Api.Logic;
 using Digipolis.Web.Guidelines.Models;
+using Digipolis.Web.Versioning;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,18 +19,20 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
     [Route("values/{valueId:int}/[controller]")]
     public class FilesController : Controller
     {
+        private readonly IApplicationEnvironment _hostingEnvironment;
         private readonly IErrorManager _errorManager;
         private readonly IFileLogic _fileLogic;
 
-        public FilesController(IErrorManager errorManager, IFileLogic fileLogic)
+        public FilesController(IApplicationEnvironment hostingEnvironment, IErrorManager errorManager, IFileLogic fileLogic)
         {
+            _hostingEnvironment = hostingEnvironment;
             _errorManager = errorManager;
             _fileLogic = fileLogic;
         }
 
         // GET: api/values
         [HttpGet]
-        [ProducesResponseType(typeof(MultipartContent), 200)]
+        [ProducesResponseType(typeof(MultipartFormDataContent), 200)]
         public IActionResult Get(int valueId, [FromQuery]Query queryOptions)
         {
             try
@@ -51,9 +57,26 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post(int valueId, [FromBody]string value)
+        public async Task<IActionResult> Post(int valueId, [FromBody]IFormFileCollection files)
         {
-            throw new NotImplementedException();
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    if (fileName.EndsWith(".txt")) // Important for security if saving in webroot
+                    {
+                        var filePath = Path.Combine(_hostingEnvironment.ApplicationBasePath, @"\wwwroot\uploads\", fileName);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                            await fileStream.FlushAsync();
+                        }
+                    }
+                    
+                }
+            }
+            return Ok();
         }
 
         // PUT api/values/5

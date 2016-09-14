@@ -24,7 +24,7 @@ namespace Digipolis.Web.Guidelines.Models
             {
                 ["Page"] = query.Page,
                 ["PageSize"] = query.PageSize,
-                ["Fields"] = query.Fields,
+                //["Fields"] = query.Fields,
                 ["Sort"] = query.Sort
             };
 
@@ -74,7 +74,7 @@ namespace Digipolis.Web.Guidelines.Models
             {
                 ["Page"] = query.Page,
                 ["PageSize"] = query.PageSize,
-                ["Fields"] = query.Fields,
+                //["Fields"] = query.Fields,
                 ["Sort"] = query.Sort
             };
 
