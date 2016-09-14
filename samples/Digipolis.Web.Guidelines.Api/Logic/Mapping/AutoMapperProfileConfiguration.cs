@@ -13,8 +13,10 @@ namespace Digipolis.Web.Guidelines.Api.Logic.Mapping
             CreateMap<Value, ValueDto>().ReverseMap();
             CreateMap<ValueType, ValueTypeDto>().ReverseMap();
             CreateMap(typeof(PagedResult<>), typeof(PagedResult<>));
-            CreateMap(typeof(IEnumerable<>), typeof(PagedResult<>))
-                .ForMember("Data", x => x.MapFrom(m => m));
+            CreateMap(typeof(IEnumerable<>), typeof(PagedResult<>)).ForMember("Data", x => x.MapFrom(m => m));
+
+            CreateMap<File, FileDto>().ConstructUsing(x=> new FileDto { Id =  x.Id, ValueId = x.ValueId, Stream = x.Stream}).ReverseMap();
+
         }
     }
 }
