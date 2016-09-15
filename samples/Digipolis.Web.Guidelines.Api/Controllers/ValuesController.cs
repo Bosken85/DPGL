@@ -6,6 +6,7 @@ using Digipolis.Web.Filters;
 using Digipolis.Web.Guidelines.Api.Configuration;
 using Digipolis.Web.Guidelines.Api.Logic;
 using Digipolis.Web.Guidelines.Api.Models;
+using Digipolis.Web.Guidelines.Helpers;
 using Digipolis.Web.Guidelines.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,13 +55,19 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
             try
             {
                 int total;
+                using (var timer = new PerformanceTimer())
+                {
+                    _valueLogic.GetAll(queryOptions, out total);
+                }
+
                 var values = _valueLogic.GetAll(queryOptions, out total);
                 var result = queryOptions.ToPagedResult(values, total, "Get", "Values", new { test = 0 });
                 return Ok(result);
+
             }
             catch (Exception ex)
             {
-                return StatusCode((int) HttpStatusCode.InternalServerError, _errorManager.Error);
+                return StatusCode((int)HttpStatusCode.InternalServerError, _errorManager.Error);
             }
         }
 
@@ -106,7 +113,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
             try
             {
                 value = _valueLogic.Add(value);
-                return CreatedAtAction("Get", new {id = value.Id}, value);
+                return CreatedAtAction("Get", new { id = value.Id }, value);
             }
             catch (Exception)
             {

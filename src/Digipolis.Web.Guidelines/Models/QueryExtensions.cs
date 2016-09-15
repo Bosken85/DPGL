@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using Digipolis.Web.Guidelines.Helpers;
 using Microsoft.AspNetCore.Routing;
 
 namespace Digipolis.Web.Guidelines.Models
 {
-    public static class HelperExtensions
+    public static class QueryExtensions
     {
         /// <summary>
         /// 
@@ -38,7 +40,7 @@ namespace Digipolis.Web.Guidelines.Models
                 var previous = UrlHelper.AbsoluteAction(actionName, controllerName, values);
                 result.Links.Previous = new Link(previous);
             }
-            
+
             values["Page"] = query.Page;
             var self = UrlHelper.AbsoluteAction(actionName, controllerName, values);
             result.Links.Self = new Link(self);
@@ -105,6 +107,22 @@ namespace Digipolis.Web.Guidelines.Models
             result.Links.Last = new Link(last);
 
             return result;
+        }
+
+        public static IQueryable<T> OrderByQuery<T>(this IQueryable<T> source, Query query) where T : class
+        {
+            if(query.Sort == null || !query.Sort.Any()) return source;
+
+            IOrderedQueryable<T> result = null;
+            for (int i = 0; i < query.Sort.Length; i++)
+            {
+                var descending = query.Sort[i].StartsWith("-");
+                var field = descending ? query.Sort[i].Remove(0, 1) : query.Sort[i];
+                if (i == 0) result = descending ? source.OrderByDescending(field) : source.OrderBy(field);
+                else result = descending ? result.ThenByDescending(field) : result.ThenBy(field);
+            }
+            MethodCallExpression expression = (result != null ? result.Expression : source.Expression) as MethodCallExpression;
+            return source.Provider.CreateQuery<T>(expression);
         }
     }
 }
