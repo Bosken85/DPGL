@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Digipolis.Web.Guidelines.JsonConverters;
 using Microsoft.AspNetCore.Http;
@@ -17,8 +16,8 @@ using Digipolis.Web.Guidelines.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Routing;
 using Swashbuckle.Swagger.Model;
+using Swashbuckle.SwaggerGen.Generator;
 
 namespace Digipolis.Web.Guidelines
 {

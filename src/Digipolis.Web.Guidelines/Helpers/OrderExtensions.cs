@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Digipolis.Web.Guidelines.Helpers
 {
@@ -73,5 +71,43 @@ namespace Digipolis.Web.Guidelines.Helpers
 
             return orderedQuery;
         }
+    }
+
+    public static class SelectExtensions
+    {
+        public static IQueryable<T> Select<T>(this IQueryable<T> source, params string[] fields) where T : class
+        {
+            var param = Expression.Parameter(typeof(T), "x");
+            var newStatement = Expression.New(typeof(ExpandoObject));
+            var bindings = fields.Select(x =>
+            {
+                var field = typeof(ExpandoObject).GetProperty(x);
+                var prop = Expression.PropertyOrField(param, x);
+                return Expression.Bind(field, prop);
+            });
+
+            var xInit = Expression.MemberInit(newStatement, bindings);
+            var lambda = Expression.Lambda<Func<T, ExpandoObject>>(xInit, param);
+            return source.Provider.CreateQuery<T>(lambda);
+
+        }
+
+        //public static IQueryable<T> Select<T>(this IQueryable<T> source, params string[] fields) where T : class
+        //{
+        //    TypeBuilder.
+        //    var param = Expression.Parameter(typeof(T), "x");
+        //    var bindings = fields.Select<MemberAssignment>(x =>
+        //    {
+        //        var prop = Expression.PropertyOrField(param, x);
+        //        test[x] = prop.Type.GetTypeInfo().IsValueType ? Activator.CreateInstance(prop.Type) : null;
+        //        var field = test.GetType().GetProperty(x);
+        //        return Expression.Bind(field, prop);
+        //    });
+
+        //    var newStatement = Expression.New(test.GetType());
+        //    var xInit = Expression.MemberInit(newStatement, bindings);
+        //    var lambda = Expression.Lambda<Func<T, ExpandoObject>>(xInit, param);
+        //    return source.Provider.CreateQuery<T>(lambda);
+        //}
     }
 }

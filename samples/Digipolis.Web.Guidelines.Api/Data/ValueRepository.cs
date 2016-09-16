@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Digipolis.Errors.Exceptions;
 using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
-using Digipolis.Web.Guidelines.Helpers;
 using Digipolis.Web.Guidelines.Models;
 using ValueType = Digipolis.Web.Guidelines.Api.Data.Entiteiten.ValueType;
 
@@ -12,6 +11,7 @@ namespace Digipolis.Web.Guidelines.Api.Data
     public class ValueRepository : IValueRepository
     {
         private readonly IErrorManager _errorManager;
+        private readonly DataContext _context;
 
         private static readonly List<Value> Values = new List<Value>(new[]
         {
@@ -24,9 +24,10 @@ namespace Digipolis.Web.Guidelines.Api.Data
 
         private static IQueryable<Value> Table => Values.AsQueryable();
 
-        public ValueRepository(IErrorManager errorManager)
+        public ValueRepository(IErrorManager errorManager, DataContext context)
         {
             _errorManager = errorManager;
+            _context = context;
         }
 
         public IEnumerable<Value> GetAll(Query queryOptions, out int total)

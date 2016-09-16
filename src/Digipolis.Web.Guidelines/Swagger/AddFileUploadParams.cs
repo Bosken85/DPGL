@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using Swashbuckle.Swagger.Model;
 using Swashbuckle.SwaggerGen.Generator;
 using System.Reflection;
+using Swashbuckle.Swagger.Model;
 
 namespace Digipolis.Web.Guidelines.Swagger
 {

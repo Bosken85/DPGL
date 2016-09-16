@@ -8,7 +8,7 @@
         /// <summary>
         /// Filtering fields to retrieve
         /// </summary>
-        //public string[] Fields { get; set; }
+        public string[] Fields { get; set; }
 
         /// <summary>
         /// Sort by fields. Multiple values can be specified by comma seperation.

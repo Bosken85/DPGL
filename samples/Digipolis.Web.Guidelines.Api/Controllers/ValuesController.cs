@@ -13,15 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Digipolis.Web.Guidelines.Api.Controllers
 {
-    /// <summary>
-    /// test
-    /// </summary>
-    /// <remarks>
-    /// ## Documentatie
-    /// 
-    /// <a href="https://www.google.be" target="_blank">Google</a>
-    /// 
-    /// </remarks>
     [Route("[controller]")]
     [Authorize]
     public class ValuesController : Controller
@@ -38,12 +29,6 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
         /// <summary>
         /// Get all values 
         /// </summary>
-        /// <remarks>
-        /// ## Documentatie
-        /// 
-        /// <a href="https://www.google.be" target="_blank">Google</a>
-        /// 
-        /// </remarks>
         /// <param name="queryOptions">Query options from uri</param>
         /// <returns>An array of value objects</returns>
         [HttpGet()]
@@ -55,11 +40,6 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
             try
             {
                 int total;
-                using (var timer = new PerformanceTimer())
-                {
-                    _valueLogic.GetAll(queryOptions, out total);
-                }
-
                 var values = _valueLogic.GetAll(queryOptions, out total);
                 var result = queryOptions.ToPagedResult(values, total, "Get", "Values", new { test = 0 });
                 return Ok(result);
@@ -79,7 +59,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ValueDto), 200)]
         [ProducesResponseType(typeof(ValueDto), 401)]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [Versions(Settings.Versions.V1, Settings.Versions.V2)]
         public IActionResult Get(int id)
         {

@@ -1,4 +1,5 @@
 ﻿using Swashbuckle.Swagger.Model;
+using Swashbuckle.SwaggerGen.Generator;
 
 namespace Digipolis.Web.Guidelines.Api.Configuration
 {

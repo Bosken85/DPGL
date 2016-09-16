@@ -3,7 +3,7 @@
 
   "dependencies": {
     "Microsoft.AspNetCore.Hosting.Abstractions": "1.0.0",
-    "Microsoft.AspNetCore.Mvc": "1.0.0",
+    "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.Extensions.Logging.Abstractions": "1.0.0",
     "NETStandard.Library": "1.6.0",
     "Swashbuckle.SwaggerGen": "6.0.0-beta902",
@@ -14,7 +14,8 @@
     "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.Extensions.DependencyInjection": "1.0.0",
-    "System.Linq.Queryable": "4.0.1"
+    "System.Linq.Queryable": "4.0.1",
+    "System.Reflection.Emit": "4.0.1"
   },
 
   "frameworks": {

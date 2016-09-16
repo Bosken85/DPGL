@@ -4,11 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Digipolis.Web.Guidelines.Api.Configuration;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.Extensions.Options;
-using Swashbuckle.Swagger.Model;
-using Swashbuckle.SwaggerGen.Application;
-using Swashbuckle.SwaggerGen.Generator;
 
 namespace Digipolis.Web.Guidelines.Api.Swagger
 {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using Digipolis.Errors;
 using Digipolis.Web.Filters;
 using Digipolis.Web.Guidelines.Models;
@@ -35,9 +34,11 @@ namespace Digipolis.Web.Guidelines.Swagger
             var allowsAnonymous = actionaAtributes.OfType<AllowAnonymousAttribute>().Any();
             if (operation.Responses.ContainsKey("401"))
             {
-                if(allowsAnonymous) operation.Responses.Remove("401");
+                if (allowsAnonymous) operation.Responses.Remove("401");
+                else operation.Responses["401"].Description = "Unauthorized";
                 return;
             };
+
             if (!attributes.OfType<AuthorizeAttribute>().Any() || allowsAnonymous) return;
             operation.Responses.Add("401", new Response
             {
@@ -49,7 +50,7 @@ namespace Digipolis.Web.Guidelines.Swagger
         public virtual void BadRequestResponse(Operation operation, OperationFilterContext context, IEnumerable<Attribute> attributes)
         {
             if (operation.Responses.ContainsKey("400")) return;
-            if (!attributes.Any(x=> x is ValidateModelStateAttribute || x is HttpPostAttribute || x is HttpPutAttribute || x is HttpPatchAttribute))
+            if (!attributes.Any(x => x is ValidateModelStateAttribute || x is HttpPostAttribute || x is HttpPutAttribute || x is HttpPatchAttribute))
                 return;
 
             operation.Responses.Add("400", new Response
@@ -86,7 +87,7 @@ namespace Digipolis.Web.Guidelines.Swagger
             if (!attributes.OfType<HttpPostAttribute>().Any()) return;
             if (!operation.Responses.ContainsKey("201")) return;
             var response = operation.Responses["201"];
-            if(response.Description.Equals("Success", StringComparison.CurrentCultureIgnoreCase))
+            if (response.Description.Equals("Success", StringComparison.CurrentCultureIgnoreCase))
                 response.Description = "Created";
         }
 

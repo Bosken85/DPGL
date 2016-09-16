@@ -4,10 +4,12 @@ using Digipolis.Web.Guidelines.Api.Data;
 using Digipolis.Web.Guidelines.Api.Logic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.Swagger.Model;
+using Swashbuckle.SwaggerGen.Generator;
 
 namespace Digipolis.Web.Guidelines.Api
 {
@@ -71,10 +73,12 @@ namespace Digipolis.Web.Guidelines.Api
 
             //Add AutoMapper
             services.AddAutoMapper();
+
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DataContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -91,6 +95,7 @@ namespace Digipolis.Web.Guidelines.Api
             // Enable Digipolis Features
             app.UseDigipolis();
 
+            context.Database.Migrate();
         }
     }
 }

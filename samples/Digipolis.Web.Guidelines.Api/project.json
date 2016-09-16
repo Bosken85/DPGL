@@ -1,13 +1,16 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.App": {
-      "version": "1.0.0",
-      "type": "platform"
-    },
     "AutoMapper": "5.1.1",
-    "Microsoft.AspNetCore.Mvc": "1.0.0",
+    "AutoMapper.Extensions.Microsoft.DependencyInjection": "1.1.2",
+    "Digipolis.Web.Guidelines": "1.0.0-*",
+    "Microsoft.AspNetCore.Http.Extensions": "1.0.0",
+    "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
+    //"Lohmann.HALight": "0.2.0-rc2",
+    "Microsoft.EntityFrameworkCore": "1.0.1",
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1",
+    "Microsoft.EntityFrameworkCore.Tools": "1.0.0-preview2-final",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
     "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
@@ -15,17 +18,17 @@
     "Microsoft.Extensions.Logging.Console": "1.0.0",
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
+    "Microsoft.NETCore.App": {
+      "version": "1.0.1",
+      "type": "platform"
+    },
     "Swashbuckle.SwaggerGen": "6.0.0-beta902",
-    "Swashbuckle.SwaggerUi": "6.0.0-beta902",
-    //"Lohmann.HALight": "0.2.0-rc2",
-    "Microsoft.EntityFrameworkCore": "1.0.0",
-    "Digipolis.Web.Guidelines": "1.0.0-*",
-    "Microsoft.AspNetCore.Http.Extensions": "1.0.0",
-    "AutoMapper.Extensions.Microsoft.DependencyInjection": "1.1.0"
+    "Swashbuckle.SwaggerUi": "6.0.0-beta902"
   },
 
   "tools": {
-    "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final"
+    "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final",
+    "Microsoft.EntityFrameworkCore.Tools": "1.0.0-preview2-final"
   },
 
   "frameworks": {

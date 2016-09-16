@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
-using Digipolis.Web.Guidelines.Helpers;
 using Digipolis.Web.Guidelines.Models;
 using Newtonsoft.Json;
 
