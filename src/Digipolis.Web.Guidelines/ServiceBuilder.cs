@@ -26,7 +26,7 @@ namespace Digipolis.Web.Guidelines
 {
     public static class ServiceBuilder
     {
-        public static IServiceCollection AddDigipolis(this IServiceCollection services, Action<IDigipolisBuilder> builder = null)
+        public static IServiceCollection AddApiDefaults(this IServiceCollection services, Action<IDigipolisBuilder> builder = null)
         {
             if(builder != null) builder(new DigipolisBuilder(services));
 

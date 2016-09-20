@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Digipolis.Web.Guidelines.Error
 {
-    public class GlobalExceptionFilter : IExceptionFilter
+    public class GlobalExceptionFilter : ExceptionFilterAttribute
     {
         private readonly IExceptionHandler _handler;
         private readonly ILogger _logger;
@@ -24,7 +24,7 @@ namespace Digipolis.Web.Guidelines.Error
             this._logger = logger.CreateLogger("Application error");
         }
 
-        public void OnException(ExceptionContext context)
+        public override void OnException(ExceptionContext context)
         {
             var response = _handler.Resolve(context.Exception);
             context.Result = new ObjectResult(response)

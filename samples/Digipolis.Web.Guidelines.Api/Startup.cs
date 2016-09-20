@@ -5,6 +5,7 @@ using Digipolis.Web.Guidelines.Api.Logic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -30,7 +31,7 @@ namespace Digipolis.Web.Guidelines.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDigipolis(x =>
+            services.AddApiDefaults(x =>
             {
                 //Enable global error handling and add error models for exceptions
                 x.EnableGlobalErrorHandling<ApiExceptionHandler>();
@@ -71,6 +72,8 @@ namespace Digipolis.Web.Guidelines.Api
                 new InfoVersion2()});
             });
 
+            services.AddEntityFramework();
+
             //Register Dependencies for example project
             services.AddScoped<IValueRepository, ValueRepository>();
             services.AddScoped<IFileRepository, FileRepository>();
@@ -100,6 +103,8 @@ namespace Digipolis.Web.Guidelines.Api
 
             // Enable Digipolis Features
             app.UseDigipolis();
+
+            app.UseExceptionHandling(mappings => mappings.Add<Error.Error>(500));
 
             context.Database.Migrate();
         }
