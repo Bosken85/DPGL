@@ -10,7 +10,7 @@ namespace Digipolis.Web.Guidelines.Error
         /// <summary>
         /// A unique id to identify error messages in the logs
         /// </summary>
-        public string Identifier { get; private set; }
+        public Guid Identifier { get; private set; }
 
         /// <summary>
         /// A URI to an absolute or relative html resource to identify the problem.
@@ -31,12 +31,15 @@ namespace Digipolis.Web.Guidelines.Error
         /// A code to identify what error it is.
         /// </summary>
         public string Code { get; set; }
-
+        
+        /// <summary>
+        /// Extra parameters to clarify the error
+        /// </summary>
         public Dictionary<string, object> ExtraParameters { get; set; }
 
         public Error()
         {
-            Identifier = Guid.NewGuid().ToString();
+            Identifier = Guid.NewGuid();
             ExtraParameters = new Dictionary<string, object>();
         }
     }

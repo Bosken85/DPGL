@@ -47,11 +47,13 @@ namespace Digipolis.Web.Guidelines
                 options.Filters.Insert(1, new ProducesAttribute("application/json"));
             }).AddJsonOptions(x =>
             {
-                x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                x.SerializerSettings.ContractResolver = new EmptyCollectionContractResolver();
                 x.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 x.SerializerSettings.Converters.Add(new TimeSpanConverter());
                 x.SerializerSettings.Converters.Add(new PageResultConverter());
+                x.SerializerSettings.Converters.Add(new GuidConverter());
+                x.SerializerSettings.Formatting = Formatting.None;
             });
             return builder;
         }
@@ -116,6 +118,8 @@ namespace Digipolis.Web.Guidelines
 
         public static void UseApiDefaults(this IApplicationBuilder app)
         {
+            app.UseMiddleware<HttpResponseMiddleware>();
+
             var httpContextAccessor = app.ApplicationServices.GetService<IActionContextAccessor>();
             Helpers.UrlHelper.Configure(httpContextAccessor);
         }

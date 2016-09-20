@@ -1,5 +1,6 @@
 ﻿using System;
 using Digipolis.Web.Guidelines.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 
 namespace Digipolis.Web.Guidelines.Mvc

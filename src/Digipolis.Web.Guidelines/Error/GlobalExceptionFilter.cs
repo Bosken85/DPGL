@@ -33,7 +33,7 @@ namespace Digipolis.Web.Guidelines.Error
                 DeclaredType = response.GetType()
             };
             //context.HttpContext.Response.ContentType = "application/problem+json charset=utf-8";
-            this._logger.LogError(response.Identifier, context.Exception);
+            this._logger.LogError(response.Identifier.ToString(), context.Exception);
             context.ExceptionHandled = true;
         }
     }

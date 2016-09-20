@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using AutoMapper;
 using Digipolis.Web.Guidelines.Api.Configuration;
 using Digipolis.Web.Guidelines.Api.Data;
@@ -18,6 +19,12 @@ using Newtonsoft.Json;
 using Swashbuckle.Swagger.Model;
 using Swashbuckle.SwaggerGen.Generator;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using NuGet.Protocol.Core.v3;
 
 namespace Digipolis.Web.Guidelines.Api
 {
@@ -101,17 +108,17 @@ namespace Digipolis.Web.Guidelines.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            // Enable Api Defaults
+            app.UseApiDefaults();
+
             //app.UseStaticFiles();
-            app.UseMvc();         
+            app.UseMvc();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
             app.UseSwaggerUi();
-
-            // Enable Api Defaults
-            app.UseApiDefaults();
 
             dataContext.Database.Migrate();
         }

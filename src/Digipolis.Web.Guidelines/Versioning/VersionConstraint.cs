@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.Extensions.Options;
 
 namespace Digipolis.Web.Guidelines.Versioning
 {
