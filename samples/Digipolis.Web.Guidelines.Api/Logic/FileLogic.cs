@@ -6,6 +6,7 @@ using Digipolis.Web.Guidelines.Api.Data;
 using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
 using Digipolis.Web.Guidelines.Models;
 using Digipolis.Web.Guidelines.Api.Models;
+using Digipolis.Web.Guidelines.Error;
 using File = Digipolis.Web.Guidelines.Api.Data.Entiteiten.File;
 
 namespace Digipolis.Web.Guidelines.Api.Logic
@@ -31,69 +32,32 @@ namespace Digipolis.Web.Guidelines.Api.Logic
 
         public FileDto GetById(int valueId, int id)
         {
-            try
-            {
-                if (id <= 0 || valueId <= 0) throw new ArgumentOutOfRangeException();
-                return _mapper.Map<File, FileDto>(_fileRepository.GetById(valueId, id));
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                _errorManager.Error.AddMessage(nameof(id), "There was no id specified to retrieve the value");
-                throw;
-            }
+            if (id <= 0 || valueId <= 0) throw new ArgumentOutOfRangeException();
+            return _mapper.Map<File, FileDto>(_fileRepository.GetById(valueId, id));
         }
 
         public FileDto Add(int valueId, FileDto value)
         {
-            try
-            {
-                if (value == null) throw new ArgumentNullException();
-                var entity = _mapper.Map<FileDto, File>(value);
-                value = _mapper.Map<File, FileDto>(_fileRepository.Add(valueId, entity));
-                return value;
-            }
-            catch (ArgumentNullException)
-            {
-                _errorManager.Error.AddMessage("There was no value object specified.");
-                throw;
-            }
+            if (value == null) throw new ArgumentNullException();
+            var entity = _mapper.Map<FileDto, File>(value);
+            value = _mapper.Map<File, FileDto>(_fileRepository.Add(valueId, entity));
+            return value;
         }
 
         public FileDto Update(int valueId, int id, FileDto value)
         {
-            try
-            {
-                if (id < 0) throw new ArgumentOutOfRangeException();
-                if (value == null) throw new ArgumentNullException();
+            if (id < 0) throw new ArgumentOutOfRangeException();
+            if (value == null) throw new ArgumentNullException();
 
-                var entity = _mapper.Map<FileDto, File>(value);
-                value = _mapper.Map<File, FileDto>(_fileRepository.Update(valueId, id, entity));
-                return value;
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                _errorManager.Error.AddMessage(nameof(id), "There was no id specified to update the value");
-                throw;
-            }
-            catch (ArgumentNullException)
-            {
-                _errorManager.Error.AddMessage("There was no value object specified.");
-                throw;
-            }
+            var entity = _mapper.Map<FileDto, File>(value);
+            value = _mapper.Map<File, FileDto>(_fileRepository.Update(valueId, id, entity));
+            return value;
         }
 
         public void Delete(int valueId, int id)
         {
-            try
-            {
-                if (id < 0) throw new ArgumentOutOfRangeException();
-                _fileRepository.Delete(valueId, id);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                _errorManager.Error.AddMessage(nameof(id), "There was no id specified to delete the value");
-                throw;
-            }
+            if (id < 0) throw new ArgumentOutOfRangeException();
+            _fileRepository.Delete(valueId, id);
         }
     }
 }

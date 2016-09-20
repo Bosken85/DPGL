@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Digipolis.Errors.Exceptions;
 using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
+using Digipolis.Web.Guidelines.Error;
 using Digipolis.Web.Guidelines.Models;
 using File = Digipolis.Web.Guidelines.Api.Data.Entiteiten.File;
 
@@ -38,17 +39,9 @@ namespace Digipolis.Web.Guidelines.Api.Data
 
         public File GetById(int valueId, int id)
         {
-            try
-            {
-                if (Files.All(x => x.ValueId == valueId && x.Id != id))
-                    throw new NotFoundException();
-                return Files.FirstOrDefault(x => x.ValueId == valueId && x.Id == id);
-            }
-            catch (NotFoundException)
-            {
-                _errorManager.Error.AddMessage(nameof(id), "No value found for this id");
-                throw;
-            }
+            if (Files.All(x => x.ValueId == valueId && x.Id != id))
+                throw new NotFoundException();
+            return Files.FirstOrDefault(x => x.ValueId == valueId && x.Id == id);
         }
 
         public File Add(int valueId, File value)
@@ -60,38 +53,22 @@ namespace Digipolis.Web.Guidelines.Api.Data
 
         public File Update(int valueId, int id, File value)
         {
-            try
-            {
-                //Mimic DB exception thrown by no record found
-                if (Files.All(x => x.ValueId == valueId && x.Id != id))
-                    throw new NotFoundException();
+            //Mimic DB exception thrown by no record found
+            if (Files.All(x => x.ValueId == valueId && x.Id != id))
+                throw new NotFoundException();
 
-                var dbValue = Files.Find(x => x.ValueId == valueId && x.Id == id);
-                dbValue.Stream = value.Stream;
-                return dbValue;
-            }
-            catch (NotFoundException)
-            {
-                _errorManager.Error.AddMessage(nameof(id), "No value was found by that Id");
-                throw;
-            }
+            var dbValue = Files.Find(x => x.ValueId == valueId && x.Id == id);
+            dbValue.Stream = value.Stream;
+            return dbValue;
         }
 
         public void Delete(int valueId, int id)
         {
-            try
-            {
-                //Mimic DB exception thrown by no record found
-                if (Files.All(x => x.ValueId == valueId && x.Id != id))
-                    throw new NotFoundException();
+            //Mimic DB exception thrown by no record found
+            if (Files.All(x => x.ValueId == valueId && x.Id != id))
+                throw new NotFoundException();
 
-                Files.Remove(Files.Find(x => x.ValueId == valueId && x.Id == id));
-            }
-            catch (NotFoundException)
-            {
-                _errorManager.Error.AddMessage(nameof(id), "No value was found by that Id");
-                throw;
-            }
+            Files.Remove(Files.Find(x => x.ValueId == valueId && x.Id == id));
         }
     }
 }

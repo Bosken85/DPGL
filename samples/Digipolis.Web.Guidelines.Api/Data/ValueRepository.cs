@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Digipolis.Errors.Exceptions;
 using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
+using Digipolis.Web.Guidelines.Error;
 using Digipolis.Web.Guidelines.Models;
 using ValueType = Digipolis.Web.Guidelines.Api.Data.Entiteiten.ValueType;
 
@@ -39,82 +40,45 @@ namespace Digipolis.Web.Guidelines.Api.Data
 
         public Value GetById(int id)
         {
-            try
-            {
-                if(Table.All(x => x.Id != id))
-                    throw new NotFoundException();
-                return Table.FirstOrDefault(x => x.Id == id);
-            }
-            catch (NotFoundException)
-            {
-                _errorManager.Error.AddMessage(nameof(id), "No value found for this id");
-                throw;
-            }
+            if (Table.All(x => x.Id != id))
+                throw new NotFoundException();
+            return Table.FirstOrDefault(x => x.Id == id);
         }
 
         public Value Add(Value value)
         {
-            try
-            {
-                //Mimic DB exception thrown by Unique Constraint
-                if (Table.Any(x => x.Name.Equals(value.Name, StringComparison.CurrentCultureIgnoreCase)))
-                    throw new InvalidOperationException();
+            //Mimic DB exception thrown by Unique Constraint
+            if (Table.Any(x => x.Name.Equals(value.Name, StringComparison.CurrentCultureIgnoreCase)))
+                throw new InvalidOperationException();
 
-                value.Id = Values.Max(x => x.Id) + 1;
-                value.CreationDate = DateTime.UtcNow;
-                Values.Add(value);
-                return value;
-            }
-            catch (InvalidOperationException)
-            {
-                _errorManager.Error.AddMessage(nameof(value.Name), "Name has to be unique between all values.");
-                throw;
-            }
+            value.Id = Values.Max(x => x.Id) + 1;
+            value.CreationDate = DateTime.UtcNow;
+            Values.Add(value);
+            return value;
         }
 
         public Value Update(int id, Value value)
         {
-            try
-            {
-                //Mimic DB exception thrown by no record found
-                if (Table.All(x => x.Id != id))
-                    throw new NotFoundException();
+            //Mimic DB exception thrown by no record found
+            if (Table.All(x => x.Id != id))
+                throw new NotFoundException();
 
-                //Mimic DB exception thrown by Unique Constraint
-                if (Table.Any(x => x.Name.Equals(value.Name, StringComparison.CurrentCultureIgnoreCase) && x.Id != id))
-                    throw new InvalidOperationException();
+            //Mimic DB exception thrown by Unique Constraint
+            if (Table.Any(x => x.Name.Equals(value.Name, StringComparison.CurrentCultureIgnoreCase) && x.Id != id))
+                throw new InvalidOperationException();
 
-                var dbValue = Values.Find(x => x.Id == id);
-                dbValue.Name = value.Name;
-                return dbValue;
-            }
-            catch (NotFoundException)
-            {
-                _errorManager.Error.AddMessage(nameof(id), "No value was found by that Id");
-                throw;
-            }
-            catch (InvalidOperationException)
-            {
-                _errorManager.Error.AddMessage(nameof(value.Name), "Name has to be unique between all values.");
-                throw;
-            }
+            var dbValue = Values.Find(x => x.Id == id);
+            dbValue.Name = value.Name;
+            return dbValue;
         }
 
         public void Delete(int id)
         {
-            try
-            {
-                //Mimic DB exception thrown by no record found
-                if (Table.All(x => x.Id != id))
-                    throw new NotFoundException();
+            //Mimic DB exception thrown by no record found
+            if (Table.All(x => x.Id != id))
+                throw new NotFoundException();
 
-                Values.Remove(Values.Find(x => x.Id == id));
-            }
-            catch (NotFoundException)
-            {
-                _errorManager.Error.AddMessage(nameof(id), "No value was found by that Id");
-                throw;
-            }
+            Values.Remove(Values.Find(x => x.Id == id));
         }
     }
 }

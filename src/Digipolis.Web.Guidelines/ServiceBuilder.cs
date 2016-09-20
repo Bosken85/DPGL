@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Digipolis.Web.Guidelines.JsonConverters;
 using Microsoft.AspNetCore.Http;
@@ -11,11 +12,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.SwaggerGen.Application;
 using System.Linq;
+using Digipolis.Web.Guidelines.Error;
 using Digipolis.Web.Guidelines.Swagger;
 using Digipolis.Web.Guidelines.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.Swagger.Model;
 using Swashbuckle.SwaggerGen.Generator;
 
@@ -23,8 +26,10 @@ namespace Digipolis.Web.Guidelines
 {
     public static class ServiceBuilder
     {
-        public static IServiceCollection AddDigipolis(this IServiceCollection services)
+        public static IServiceCollection AddDigipolis(this IServiceCollection services, Action<IDigipolisBuilder> builder = null)
         {
+            if(builder != null) builder(new DigipolisBuilder(services));
+
             return services
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                 .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
@@ -37,6 +42,7 @@ namespace Digipolis.Web.Guidelines
             {
                 options.Filters.Insert(0, new ConsumesAttribute("application/json"));
                 options.Filters.Insert(1, new ProducesAttribute("application/json"));
+                options.Filters.Add(typeof(GlobalExceptionFilter));
                 options.UseCentralRoutePrefix(new RouteAttribute("{apiVersion}"));
             }).AddJsonOptions(x =>
             {
@@ -87,35 +93,18 @@ namespace Digipolis.Web.Guidelines
         /// <returns></returns>
         public static IServiceCollection ConfigureSwaggerGenDefaults(this IServiceCollection services)
         {
-            return services.Configure<SwaggerGenOptions>(x =>
-            {
-                x.DescribeAllEnumsAsStrings();
-                x.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, PlatformServices.Default.Application.ApplicationName + ".xml"));
-                x.OperationFilter<DigipolisGuidelines>();
-                x.OperationFilter<AddFileUploadParams>();
-                x.DocumentFilter<EndPointPathsAndParamsToLower>();
-                x.DocumentFilter<SetVersionInPaths>();
-                x.SchemaFilter<PagedResultSchemaFilter>();
-            });
+            return ConfigureSwaggerGenDefaults<DefaultSwaggerSettings>(services);
         }
 
         /// <summary>
-        /// This configures Swagger to follow the guidelines set out by Digipolis with the exception that you can override the setting made in <see cref="DigipolisGuidelines"/>
+        /// Configure Swagger completly to your need by inheriting from <see cref="SwaggerSettings{ResponseGuidelines}"/>
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection ConfigureSwaggerGenDefaults<TResponseGuidelines>(this IServiceCollection services) where TResponseGuidelines : DigipolisGuidelines
+        public static IServiceCollection ConfigureSwaggerGenDefaults<TSwaggerSettings>(this IServiceCollection services) where TSwaggerSettings : SwaggerSettings<ResponseGuidelines>, new()
         {
-            return services.Configure<SwaggerGenOptions>(x =>
-            {
-                x.DescribeAllEnumsAsStrings();
-                x.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, PlatformServices.Default.Application.ApplicationName + ".xml"));
-                x.OperationFilter<TResponseGuidelines>();
-                x.OperationFilter<AddFileUploadParams>();
-                x.DocumentFilter<EndPointPathsAndParamsToLower>();
-                x.DocumentFilter<SetVersionInPaths>();
-                x.SchemaFilter<PagedResultSchemaFilter>();
-            });
+            var settings = new TSwaggerSettings();
+            return services.Configure<SwaggerGenOptions>(settings.Configure);
         }
 
         public static void MultipleApiVersions<TInfo>(this SwaggerGenOptions options, IEnumerable<TInfo> apiVersions)
@@ -124,11 +113,10 @@ namespace Digipolis.Web.Guidelines
             options.MultipleApiVersions(apiVersions, ResolveVersionSupportByVersionsConstraint);
         }
 
-        public static IApplicationBuilder UseDigipolis(this IApplicationBuilder app)
+        public static void UseDigipolis(this IApplicationBuilder app)
         {
             var httpContextAccessor = app.ApplicationServices.GetService<IActionContextAccessor>();
             Helpers.UrlHelper.Configure(httpContextAccessor);
-            return app;
         }
 
         private static bool ResolveVersionSupportByVersionsConstraint(ApiDescription apiDesc, string version)

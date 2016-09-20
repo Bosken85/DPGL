@@ -2,12 +2,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using Digipolis.Errors.Exceptions;
-using Digipolis.Web.Filters;
 using Digipolis.Web.Guidelines.Api.Configuration;
 using Digipolis.Web.Guidelines.Api.Logic;
 using Digipolis.Web.Guidelines.Api.Models;
+using Digipolis.Web.Guidelines.Error;
 using Digipolis.Web.Guidelines.Helpers;
 using Digipolis.Web.Guidelines.Models;
+using Digipolis.Web.Guidelines.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -59,7 +60,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ValueDto), 200)]
         [ProducesResponseType(typeof(ValueDto), 401)]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [Versions(Settings.Versions.V1, Settings.Versions.V2)]
         public IActionResult Get(int id)
         {
@@ -84,7 +85,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
         /// <param name="value">A value object</param>
         /// <returns>The created value object</returns>
         [HttpPost]
-        [ValidateModelState]
+        [ValidateModel]
         [ProducesResponseType(typeof(ValueDto), 201)]
         [AllowAnonymous]
         [Versions(Settings.Versions.V1, Settings.Versions.V2)]
@@ -108,8 +109,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
         /// <param name="value">The updated value object</param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [ValidateModelState]
-        [AllowAnonymous]
+        [ValidateModel]
         [Versions(Settings.Versions.V1, Settings.Versions.V2)]
         public IActionResult Put(int id, [FromBody, Required] ValueDto value)
         {

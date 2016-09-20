@@ -30,14 +30,20 @@ namespace Digipolis.Web.Guidelines.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDigipolis();
+            services.AddDigipolis(x =>
+            {
+                //Enable global error handling and add error models for exceptions
+                x.EnableGlobalErrorHandling<ApiExceptionHandler>();
+            });
 
             // Add MVC framework with defaulted settings applied.
-            services.AddMvc().AddMvcDefaults().AddMvcOptions(x =>
-            {
-                //Override default settings here
-                //...
-            });
+            services.AddMvc()
+                .AddMvcDefaults()
+                .AddMvcOptions(x =>
+                {
+                    //Override default settings here
+                    //...
+                });
 
             // Inject an implementation of ISwaggerProvider with defaulted settings applied
             services.AddSwaggerGen();
