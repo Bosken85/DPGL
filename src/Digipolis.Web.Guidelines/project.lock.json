@@ -1964,7 +1964,7 @@
           "System.Runtime": "4.1.0"
         },
         "compile": {
-          "ref/netstandard1.1/System.Reflection.Emit.dll": {}
+          "ref/netstandard1.1/_._": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Reflection.Emit.dll": {}
@@ -1978,7 +1978,7 @@
           "System.Runtime": "4.1.0"
         },
         "compile": {
-          "ref/netstandard1.0/System.Reflection.Emit.ILGeneration.dll": {}
+          "ref/netstandard1.0/_._": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Reflection.Emit.ILGeneration.dll": {}
@@ -7806,8 +7806,7 @@
       "Microsoft.Extensions.Logging.Abstractions >= 1.0.0",
       "NETStandard.Library >= 1.6.0",
       "Swashbuckle.SwaggerGen >= 6.0.0-beta902",
-      "System.Linq.Queryable >= 4.0.1",
-      "System.Reflection.Emit >= 4.0.1"
+      "System.Linq.Queryable >= 4.0.1"
     ],
     ".NETStandard,Version=v1.6": []
   },

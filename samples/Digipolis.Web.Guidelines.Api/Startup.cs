@@ -1,16 +1,23 @@
-﻿using AutoMapper;
+﻿using System.Text;
+using AutoMapper;
 using Digipolis.Web.Guidelines.Api.Configuration;
 using Digipolis.Web.Guidelines.Api.Data;
 using Digipolis.Web.Guidelines.Api.Logic;
+using Digipolis.Web.Guidelines.Error;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
 using Swashbuckle.Swagger.Model;
 using Swashbuckle.SwaggerGen.Generator;
+using System.Linq;
 
 namespace Digipolis.Web.Guidelines.Api
 {
@@ -31,12 +38,6 @@ namespace Digipolis.Web.Guidelines.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApiDefaults(x =>
-            {
-                //Enable global error handling and add error models for exceptions
-                x.EnableGlobalErrorHandling<ApiExceptionHandler>();
-            });
-
             // Add MVC framework with defaulted settings applied.
             services.AddMvc()
                 .AddMvcDefaults()
@@ -45,6 +46,14 @@ namespace Digipolis.Web.Guidelines.Api
                     //Override default settings here
                     //...
                 });
+
+            //Add Api defaults AFTER AddMvc
+            services.AddApiDefaults(x =>
+            {
+                //Enable global error handling and add error models for exceptions
+                x.EnableGlobalErrorHandling<ApiExceptionHandler>();
+                x.EnableVersioning();
+            });
 
             // Inject an implementation of ISwaggerProvider with defaulted settings applied
             services.AddSwaggerGen();
@@ -87,13 +96,13 @@ namespace Digipolis.Web.Guidelines.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DataContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DataContext dataContext)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             //app.UseStaticFiles();
-            app.UseMvc();
+            app.UseMvc();         
 
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger();
@@ -101,10 +110,10 @@ namespace Digipolis.Web.Guidelines.Api
             // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
             app.UseSwaggerUi();
 
-            // Enable Digipolis Features
-            app.UseDigipolis();
+            // Enable Api Defaults
+            app.UseApiDefaults();
 
-            context.Database.Migrate();
+            dataContext.Database.Migrate();
         }
     }
 }

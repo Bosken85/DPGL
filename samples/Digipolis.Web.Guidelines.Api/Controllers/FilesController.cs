@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Digipolis.Web.Guidelines.Api.Logic;
 using Digipolis.Web.Guidelines.Error;
 using Digipolis.Web.Guidelines.Models;
-using Digipolis.Web.Versioning;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

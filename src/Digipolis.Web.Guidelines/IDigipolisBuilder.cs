@@ -6,5 +6,7 @@ namespace Digipolis.Web.Guidelines
     {
         IDigipolisBuilder EnableGlobalErrorHandling<TExceptionHandler>() where TExceptionHandler : ExceptionHandler;
 
+        IDigipolisBuilder EnableVersioning();
+
     }
 }

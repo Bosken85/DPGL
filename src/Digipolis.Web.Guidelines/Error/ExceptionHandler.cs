@@ -19,9 +19,9 @@ namespace Digipolis.Web.Guidelines.Error
 
         public void CreateMap<TException>(Action<Error, TException> configError) where TException : Exception
         {
-            if(!_errorMappings.Any())
-                throw new Exception("First create the default mapping using method CreateDefaultMapping");
-            _errorMappings.Add(typeof(TException), (Action<Error, Exception>)configError);
+            Action<Error,Exception> action = (x, y) => configError(x, (TException)y);
+            if (!_errorMappings.Any()) throw new Exception("First create the default mapping using method CreateDefaultMapping");
+            _errorMappings.Add(typeof(TException), action);
         }
 
         public void CreateDefaultMap(Action<Error, Exception> configError)

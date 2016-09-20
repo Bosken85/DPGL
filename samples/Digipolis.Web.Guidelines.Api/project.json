@@ -19,7 +19,7 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "Digipolis.Errors": "2.0.0",
-    "Digipolis.Web" : "2.0.3", 
+    "Digipolis.Web": "2.0.3",
     "Microsoft.NETCore.App": {
       "version": "1.0.1",
       "type": "platform"

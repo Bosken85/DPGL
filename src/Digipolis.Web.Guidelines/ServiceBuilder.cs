@@ -13,6 +13,7 @@ using Newtonsoft.Json.Serialization;
 using Swashbuckle.SwaggerGen.Application;
 using System.Linq;
 using Digipolis.Web.Guidelines.Error;
+using Digipolis.Web.Guidelines.Mvc;
 using Digipolis.Web.Guidelines.Swagger;
 using Digipolis.Web.Guidelines.Versioning;
 using Microsoft.AspNetCore.Builder;
@@ -28,11 +29,13 @@ namespace Digipolis.Web.Guidelines
     {
         public static IServiceCollection AddApiDefaults(this IServiceCollection services, Action<IDigipolisBuilder> builder = null)
         {
-            if(builder != null) builder(new DigipolisBuilder(services));
-
+            var digipolisOptions = new DigipolisOptions();
+            if (builder != null) builder(new DigipolisBuilder(services, digipolisOptions));
+            
             return services
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                 .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
+                .AddSingleton<DigipolisOptions>(digipolisOptions)
                 .AddScoped<IErrorManager, ErrorManager>();
         }
 
@@ -42,8 +45,6 @@ namespace Digipolis.Web.Guidelines
             {
                 options.Filters.Insert(0, new ConsumesAttribute("application/json"));
                 options.Filters.Insert(1, new ProducesAttribute("application/json"));
-                options.Filters.Add(typeof(GlobalExceptionFilter));
-                options.UseCentralRoutePrefix(new RouteAttribute("{apiVersion}"));
             }).AddJsonOptions(x =>
             {
                 x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -81,7 +82,7 @@ namespace Digipolis.Web.Guidelines
             return builder;
         }
 
-        public static void UseCentralRoutePrefix(this MvcOptions opts, IRouteTemplateProvider routeAttribute)
+        internal static void UseCentralRoutePrefix(this MvcOptions opts, IRouteTemplateProvider routeAttribute)
         {
             opts.Conventions.Insert(0, new RouteConvention(routeAttribute));
         }
@@ -113,7 +114,7 @@ namespace Digipolis.Web.Guidelines
             options.MultipleApiVersions(apiVersions, ResolveVersionSupportByVersionsConstraint);
         }
 
-        public static void UseDigipolis(this IApplicationBuilder app)
+        public static void UseApiDefaults(this IApplicationBuilder app)
         {
             var httpContextAccessor = app.ApplicationServices.GetService<IActionContextAccessor>();
             Helpers.UrlHelper.Configure(httpContextAccessor);
