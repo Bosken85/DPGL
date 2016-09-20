@@ -104,8 +104,6 @@ namespace Digipolis.Web.Guidelines.Api
             // Enable Digipolis Features
             app.UseDigipolis();
 
-            app.UseExceptionHandling(mappings => mappings.Add<Error.Error>(500));
-
             context.Database.Migrate();
         }
     }
