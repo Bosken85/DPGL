@@ -12,12 +12,6 @@ namespace Digipolis.Web.Guidelines.Api.Configuration
     {
         public override void Configure()
         {
-            CreateDefaultMap((x, ex) =>
-            {
-                x.Status = (int)HttpStatusCode.InternalServerError;
-                x.Title = "Woeps";
-            });
-
             CreateMap<ValidationException>((x, ex) =>
             {
                 x.Status = (int)HttpStatusCode.BadRequest;
@@ -43,6 +37,12 @@ namespace Digipolis.Web.Guidelines.Api.Configuration
                 x.Title = "The resource you requested does not exist";
             });
 
+        }
+
+        public override void CreateDefaultMap(Error.Error error, Exception exception)
+        {
+            error.Status = (int)HttpStatusCode.InternalServerError;
+            error.Title = "Woeps";
         }
     }
 }

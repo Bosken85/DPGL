@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Digipolis.Web.Guidelines.Api.Logic;
 using Digipolis.Web.Guidelines.Error;
 using Digipolis.Web.Guidelines.Models;
+using Digipolis.Web.Guidelines.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
         // GET: api/values
         [HttpGet]
         [ProducesResponseType(typeof(MultipartFormDataContent), 200)]
-        public IActionResult Get(int valueId, [FromQuery]Query queryOptions)
+        public IActionResult Get(int valueId, [FromQuery]PageFilter queryOptions)
         {
             int total;
             var values = _fileLogic.GetAll(valueId, queryOptions, out total);

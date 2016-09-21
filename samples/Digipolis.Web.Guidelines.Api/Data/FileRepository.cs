@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Digipolis.Errors.Exceptions;
-using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
 using Digipolis.Web.Guidelines.Error;
-using Digipolis.Web.Guidelines.Models;
+using Digipolis.Web.Guidelines.Mvc;
 using File = Digipolis.Web.Guidelines.Api.Data.Entiteiten.File;
 
 namespace Digipolis.Web.Guidelines.Api.Data
@@ -30,7 +26,7 @@ namespace Digipolis.Web.Guidelines.Api.Data
         }
 
 
-        public IEnumerable<File> GetAll(int valueId, Query queryOptions, out int total)
+        public IEnumerable<File> GetAll(int valueId, PageFilter queryOptions, out int total)
         {
             var result = Files.Where(x => x.ValueId == valueId);
             total = result.Count();

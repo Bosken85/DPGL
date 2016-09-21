@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Linq.Expressions;
 using Digipolis.Web.Guidelines.Helpers;
+using Digipolis.Web.Guidelines.Models;
 using Microsoft.AspNetCore.Routing;
 
-namespace Digipolis.Web.Guidelines.Models
+namespace Digipolis.Web.Guidelines.Mvc
 {
-    public static class QueryExtensions
+    public static class PageFilterExtensions
     {
         /// <summary>
         /// 
@@ -19,7 +20,7 @@ namespace Digipolis.Web.Guidelines.Models
         /// <param name="controllerName"></param>
         /// <param name="routeValues"></param>
         /// <returns></returns>
-        public static PagedResult<T> ToPagedResult<T>(this Query query, IEnumerable<T> data, int total, string actionName, string controllerName, object routeValues = null) where T : class, new()
+        public static PagedResult<T> ToPagedResult<T>(this PageFilter query, IEnumerable<T> data, int total, string actionName, string controllerName, object routeValues = null) where T : class, new()
         {
             var result = new PagedResult<T>(query.Page, query.PageSize, total, data);
             var values = new RouteValueDictionary(routeValues)
@@ -69,7 +70,7 @@ namespace Digipolis.Web.Guidelines.Models
         /// <param name="routeName"></param>
         /// <param name="routeValues"></param>
         /// <returns></returns>
-        public static PagedResult<T> ToPagedResult<T>(this Query query, IEnumerable<T> data, int total, string routeName, object routeValues = null) where T : class, new()
+        public static PagedResult<T> ToPagedResult<T>(this PageFilter query, IEnumerable<T> data, int total, string routeName, object routeValues = null) where T : class, new()
         {
             var result = new PagedResult<T>(query.Page, query.PageSize, total, data);
             var values = new RouteValueDictionary(routeValues)
@@ -109,7 +110,7 @@ namespace Digipolis.Web.Guidelines.Models
             return result;
         }
 
-        public static IQueryable<T> OrderByQuery<T>(this IQueryable<T> source, Query query) where T : class
+        public static IQueryable<T> OrderByQuery<T>(this IQueryable<T> source, PageFilter query) where T : class
         {
             if(query.Sort == null || !query.Sort.Any()) return source;
 

@@ -31,7 +31,7 @@ namespace Digipolis.Web.Guidelines
         {
             var digipolisOptions = new DigipolisOptions();
             if (builder != null) builder(new DigipolisBuilder(services, digipolisOptions));
-            
+            //TODO: use TryAddSingleton ipv AddSingleton
             return services
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                 .AddSingleton<IActionContextAccessor, ActionContextAccessor>()

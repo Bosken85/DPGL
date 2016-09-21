@@ -4,7 +4,7 @@ using System.Linq;
 using Digipolis.Errors.Exceptions;
 using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
 using Digipolis.Web.Guidelines.Error;
-using Digipolis.Web.Guidelines.Models;
+using Digipolis.Web.Guidelines.Mvc;
 using ValueType = Digipolis.Web.Guidelines.Api.Data.Entiteiten.ValueType;
 
 namespace Digipolis.Web.Guidelines.Api.Data
@@ -31,7 +31,7 @@ namespace Digipolis.Web.Guidelines.Api.Data
             _context = context;
         }
 
-        public IEnumerable<Value> GetAll(Query queryOptions, out int total)
+        public IEnumerable<Value> GetAll(PageFilter queryOptions, out int total)
         {
             total = Table.Count();
             var query = Table.OrderByQuery(queryOptions).Skip((queryOptions.Page - 1)*queryOptions.PageSize).Take(queryOptions.PageSize);

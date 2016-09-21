@@ -36,7 +36,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
         [ProducesResponseType(typeof(PagedResult<ValueDto>), 200)]
         [AllowAnonymous]
         [Versions(Settings.Versions.V1, Settings.Versions.V2)]
-        public IActionResult Get([FromQuery]Query queryOptions)
+        public IActionResult Get([FromQuery]PageFilter queryOptions)
         {
             try
             {

@@ -6,8 +6,10 @@ namespace Digipolis.Web.Guidelines.Helpers
     internal static class UrlHelper
     {
         private static IActionContextAccessor _httpContextAccessor;
+
         public static void Configure(IActionContextAccessor httpContextAccessor)
         {
+            //TODO: add null check!
             _httpContextAccessor = httpContextAccessor;
         }
 

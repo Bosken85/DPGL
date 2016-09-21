@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using AutoMapper;
 using Digipolis.Web.Guidelines.Api.Data;
-using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
-using Digipolis.Web.Guidelines.Models;
 using Digipolis.Web.Guidelines.Api.Models;
 using Digipolis.Web.Guidelines.Error;
+using Digipolis.Web.Guidelines.Mvc;
 using File = Digipolis.Web.Guidelines.Api.Data.Entiteiten.File;
 
 namespace Digipolis.Web.Guidelines.Api.Logic
@@ -24,7 +22,7 @@ namespace Digipolis.Web.Guidelines.Api.Logic
             _errorManager = errorManager;
         }
 
-        public IEnumerable<FileDto> GetAll(int valueId, Query queryOptions, out int total)
+        public IEnumerable<FileDto> GetAll(int valueId, PageFilter queryOptions, out int total)
         {
             var result = _fileRepository.GetAll(valueId, queryOptions, out total);
             return _mapper.Map<IEnumerable<File>, IEnumerable<FileDto>>(result);

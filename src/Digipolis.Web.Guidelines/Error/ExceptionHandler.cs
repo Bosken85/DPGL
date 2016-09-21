@@ -12,28 +12,22 @@ namespace Digipolis.Web.Guidelines.Error
         protected ExceptionHandler()
         {
             _errorMappings = new Dictionary<Type, Action<Error, Exception>>();
+            _errorMappings.Add(typeof(Exception), CreateDefaultMap);
             Configure();
         }
 
         public abstract void Configure();
 
+        public abstract void CreateDefaultMap(Error error, Exception exception);
+
         public void CreateMap<TException>(Action<Error, TException> configError) where TException : Exception
         {
             Action<Error,Exception> action = (x, y) => configError(x, (TException)y);
-            if (!_errorMappings.Any()) throw new Exception("First create the default mapping using method CreateDefaultMapping");
             _errorMappings.Add(typeof(TException), action);
-        }
-
-        public void CreateDefaultMap(Action<Error, Exception> configError)
-        {
-            _errorMappings.Add(typeof(Exception), configError);
         }
 
         protected Error Map(Exception exception)
         {
-            if (!_errorMappings.Any())
-                throw new Exception("No mappings for error models are made first create the default mapping using method CreateDefaultMapping and then add additional mapping with method CreateMap");
-
             var type = exception.GetType();
             var error = new Error();
 

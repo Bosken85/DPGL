@@ -6,6 +6,7 @@ using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
 using Digipolis.Web.Guidelines.Api.Models;
 using Digipolis.Web.Guidelines.Error;
 using Digipolis.Web.Guidelines.Models;
+using Digipolis.Web.Guidelines.Mvc;
 
 namespace Digipolis.Web.Guidelines.Api.Logic
 {
@@ -22,7 +23,7 @@ namespace Digipolis.Web.Guidelines.Api.Logic
             _errorManager = errorManager;
         }
 
-        public IEnumerable<ValueDto> GetAll(Query queryOptions, out int total)
+        public IEnumerable<ValueDto> GetAll(PageFilter queryOptions, out int total)
         {
             var result = _valueRepository.GetAll(queryOptions, out total);
             return _mapper.Map<IEnumerable<Value>, IEnumerable<ValueDto>>(result);
