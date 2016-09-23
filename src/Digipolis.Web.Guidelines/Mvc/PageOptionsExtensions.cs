@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Digipolis.Web.Guidelines.Mvc
 {
-    public static class PageFilterExtensions
+    public static class PageOptionsExtensions
     {
         /// <summary>
         /// 
@@ -20,7 +20,7 @@ namespace Digipolis.Web.Guidelines.Mvc
         /// <param name="controllerName"></param>
         /// <param name="routeValues"></param>
         /// <returns></returns>
-        public static PagedResult<T> ToPagedResult<T>(this PageFilter query, IEnumerable<T> data, int total, string actionName, string controllerName, object routeValues = null) where T : class, new()
+        public static PagedResult<T> ToPagedResult<T>(this PageOptions query, IEnumerable<T> data, int total, string actionName, string controllerName, object routeValues = null) where T : class, new()
         {
             var result = new PagedResult<T>(query.Page, query.PageSize, total, data);
             var values = new RouteValueDictionary(routeValues)
@@ -70,7 +70,7 @@ namespace Digipolis.Web.Guidelines.Mvc
         /// <param name="routeName"></param>
         /// <param name="routeValues"></param>
         /// <returns></returns>
-        public static PagedResult<T> ToPagedResult<T>(this PageFilter query, IEnumerable<T> data, int total, string routeName, object routeValues = null) where T : class, new()
+        public static PagedResult<T> ToPagedResult<T>(this PageOptions query, IEnumerable<T> data, int total, string routeName, object routeValues = null) where T : class, new()
         {
             var result = new PagedResult<T>(query.Page, query.PageSize, total, data);
             var values = new RouteValueDictionary(routeValues)
@@ -110,7 +110,7 @@ namespace Digipolis.Web.Guidelines.Mvc
             return result;
         }
 
-        public static IQueryable<T> OrderByQuery<T>(this IQueryable<T> source, PageFilter query) where T : class
+        public static IQueryable<T> OrderByQuery<T>(this IQueryable<T> source, PageOptions query) where T : class
         {
             if(query.Sort == null || !query.Sort.Any()) return source;
 

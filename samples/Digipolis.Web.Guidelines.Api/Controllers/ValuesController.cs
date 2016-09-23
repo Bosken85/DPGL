@@ -18,12 +18,10 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
     [Authorize]
     public class ValuesController : Controller
     {
-        private readonly IErrorManager _errorManager;
         private readonly IValueLogic _valueLogic;
 
-        public ValuesController(IErrorManager errorManager, IValueLogic valueLogic)
+        public ValuesController(IValueLogic valueLogic)
         {
-            _errorManager = errorManager;
             _valueLogic = valueLogic;
         }
 
@@ -36,7 +34,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
         [ProducesResponseType(typeof(PagedResult<ValueDto>), 200)]
         [AllowAnonymous]
         [Versions(Settings.Versions.V1, Settings.Versions.V2)]
-        public IActionResult Get([FromQuery]PageFilter queryOptions)
+        public IActionResult Get([FromQuery]PageOptions queryOptions)
         {
             try
             {
@@ -48,7 +46,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, _errorManager.Error);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
 
@@ -71,11 +69,11 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
             }
             catch (ArgumentOutOfRangeException)
             {
-                return BadRequest(_errorManager.Error);
+                return BadRequest();
             }
             catch (NotFoundException)
             {
-                return NotFound(_errorManager.Error);
+                return NotFound();
             }
         }
 
@@ -98,7 +96,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
             }
             catch (Exception)
             {
-                return BadRequest(_errorManager.Error);
+                return BadRequest();
             }
         }
 
@@ -120,11 +118,11 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
             }
             catch (NotFoundException)
             {
-                return NotFound(_errorManager.Error);
+                return NotFound();
             }
             catch (Exception ex)
             {
-                return BadRequest(_errorManager.Error);
+                return BadRequest();
             }
         }
 
@@ -144,7 +142,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
             }
             catch (NotFoundException)
             {
-                return NotFound(_errorManager.Error);
+                return NotFound();
             }
         }
     }

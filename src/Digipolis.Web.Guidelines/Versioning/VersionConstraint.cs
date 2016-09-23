@@ -17,8 +17,8 @@ namespace Digipolis.Web.Guidelines.Versioning
 
         public bool Accept(ActionConstraintContext context)
         {
-            var options = (DigipolisOptions)context.RouteContext.HttpContext.RequestServices.GetService(typeof(DigipolisOptions));
-            if (!options.EnableVersioning) return true;
+            //var options = (IOptions<ApiExtensionOptions>)context.RouteContext.HttpContext.RequestServices.GetService(typeof(IOptions<ApiExtensionOptions>));
+            //if (!options.Value.EnableVersioning) return true;
 
             var versionValue = context.RouteContext.RouteData.Values["apiVersion"];
             if (versionValue == null) return false;

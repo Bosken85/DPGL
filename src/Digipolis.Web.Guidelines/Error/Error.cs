@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Digipolis.Web.Guidelines.Error
 {
@@ -37,10 +35,14 @@ namespace Digipolis.Web.Guidelines.Error
         /// </summary>
         public Dictionary<string, object> ExtraParameters { get; set; }
 
-        public Error()
+        public Error(Dictionary<string, object> extraParameters = null)
+            :this(Guid.NewGuid(), extraParameters)
+        {}
+
+        public Error(Guid identifier, Dictionary<string, object> extraParameters = null)
         {
-            Identifier = Guid.NewGuid();
-            ExtraParameters = new Dictionary<string, object>();
+            Identifier = identifier;
+            ExtraParameters = extraParameters ?? new Dictionary<string, object>();
         }
     }
 }

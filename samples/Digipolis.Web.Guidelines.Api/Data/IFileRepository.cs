@@ -6,7 +6,7 @@ namespace Digipolis.Web.Guidelines.Api.Data
 {
     public interface IFileRepository
     {
-        IEnumerable<File> GetAll(int valueId, PageFilter queryOptions, out int total);
+        IEnumerable<File> GetAll(int valueId, PageOptions queryOptions, out int total);
         File GetById(int valueId, int id);
         File Add(int valueId, File value);
         File Update(int valueId, int id, File value);

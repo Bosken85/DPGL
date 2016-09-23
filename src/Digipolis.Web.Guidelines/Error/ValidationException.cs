@@ -11,10 +11,10 @@ namespace Digipolis.Web.Guidelines.Error
     {
         public Dictionary<string, IEnumerable<string>> ModelState { get; private set; }
 
-        public ValidationException(ModelStateDictionary modelState, string message = null, Exception exception = null)
+        public ValidationException(Dictionary<string, IEnumerable<string>> modelState = null, string message = null, Exception exception = null)
             : base(message, exception)
         {
-            ModelState = modelState.ToDictionary(x => x.Key, x => x.Value.Errors.Select(e => e.ErrorMessage));
+            ModelState = modelState ?? new Dictionary<string, IEnumerable<string>>();
         }
     }
 }

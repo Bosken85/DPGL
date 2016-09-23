@@ -5,7 +5,6 @@ using Digipolis.Web.Guidelines.Api.Data;
 using Digipolis.Web.Guidelines.Api.Data.Entiteiten;
 using Digipolis.Web.Guidelines.Api.Models;
 using Digipolis.Web.Guidelines.Error;
-using Digipolis.Web.Guidelines.Models;
 using Digipolis.Web.Guidelines.Mvc;
 
 namespace Digipolis.Web.Guidelines.Api.Logic
@@ -14,16 +13,14 @@ namespace Digipolis.Web.Guidelines.Api.Logic
     {
         private readonly IMapper _mapper;
         private readonly IValueRepository _valueRepository;
-        private readonly IErrorManager _errorManager;
 
-        public ValueLogic(IMapper mapper, IValueRepository valueRepository, IErrorManager errorManager)
+        public ValueLogic(IMapper mapper, IValueRepository valueRepository)
         {
             _mapper = mapper;
             _valueRepository = valueRepository;
-            _errorManager = errorManager;
         }
 
-        public IEnumerable<ValueDto> GetAll(PageFilter queryOptions, out int total)
+        public IEnumerable<ValueDto> GetAll(PageOptions queryOptions, out int total)
         {
             var result = _valueRepository.GetAll(queryOptions, out total);
             return _mapper.Map<IEnumerable<Value>, IEnumerable<ValueDto>>(result);

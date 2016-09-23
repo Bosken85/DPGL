@@ -6,7 +6,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Digipolis.Web.Guidelines.JsonConverters
 {
-    internal class EmptyCollectionContractResolver : CamelCasePropertyNamesContractResolver
+    public class BaseContractResolver : CamelCasePropertyNamesContractResolver
     {
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {

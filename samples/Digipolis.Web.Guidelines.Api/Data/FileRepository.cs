@@ -9,8 +9,6 @@ namespace Digipolis.Web.Guidelines.Api.Data
 {
     public class FileRepository : IFileRepository
     {
-        private readonly IErrorManager _errorManager;
-
         private static readonly List<File> Files = new List<File>(new[]
         {
             new File(1, 1),
@@ -20,13 +18,12 @@ namespace Digipolis.Web.Guidelines.Api.Data
             new File(1,5)
         });
 
-        public FileRepository(IErrorManager errorManager)
+        public FileRepository()
         {
-            _errorManager = errorManager;
         }
 
 
-        public IEnumerable<File> GetAll(int valueId, PageFilter queryOptions, out int total)
+        public IEnumerable<File> GetAll(int valueId, PageOptions queryOptions, out int total)
         {
             var result = Files.Where(x => x.ValueId == valueId);
             total = result.Count();

@@ -13,16 +13,14 @@ namespace Digipolis.Web.Guidelines.Api.Logic
     {
         private readonly IMapper _mapper;
         private readonly IFileRepository _fileRepository;
-        private readonly IErrorManager _errorManager;
 
-        public FileLogic(IMapper mapper, IFileRepository fileRepository, IErrorManager errorManager)
+        public FileLogic(IMapper mapper, IFileRepository fileRepository)
         {
             _mapper = mapper;
             _fileRepository = fileRepository;
-            _errorManager = errorManager;
         }
 
-        public IEnumerable<FileDto> GetAll(int valueId, PageFilter queryOptions, out int total)
+        public IEnumerable<FileDto> GetAll(int valueId, PageOptions queryOptions, out int total)
         {
             var result = _fileRepository.GetAll(valueId, queryOptions, out total);
             return _mapper.Map<IEnumerable<File>, IEnumerable<FileDto>>(result);

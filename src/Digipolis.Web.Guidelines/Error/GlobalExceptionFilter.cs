@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Digipolis.Web.Guidelines.Error
 {
@@ -21,19 +22,19 @@ namespace Digipolis.Web.Guidelines.Error
                 throw new ArgumentNullException(nameof(logger));
             }
 
-            this._logger = logger.CreateLogger("Application error");
+            _logger = logger.CreateLogger("Application error");
         }
 
         public override void OnException(ExceptionContext context)
         {
-            var response = _handler.Resolve(context.Exception);
+            var response = _handler?.Resolve(context.Exception);
+            if (response == null) return;
             context.Result = new ObjectResult(response)
             {
                 StatusCode = response.Status,
                 DeclaredType = response.GetType()
             };
-            //context.HttpContext.Response.ContentType = "application/problem+json charset=utf-8";
-            this._logger.LogError(response.Identifier.ToString(), context.Exception);
+            _logger?.LogError(response.Identifier.ToString(), context.Exception);
             context.ExceptionHandled = true;
         }
     }

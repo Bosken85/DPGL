@@ -7,7 +7,7 @@ namespace Digipolis.Web.Guidelines.Api.Logic
 {
     public interface IValueLogic
     {
-        IEnumerable<ValueDto> GetAll(PageFilter queryOptions, out int total);
+        IEnumerable<ValueDto> GetAll(PageOptions queryOptions, out int total);
         ValueDto GetById(int id);
         ValueDto Add(ValueDto value);
         ValueDto Update(int id, ValueDto value);

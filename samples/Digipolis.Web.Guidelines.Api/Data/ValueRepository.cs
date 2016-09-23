@@ -11,7 +11,6 @@ namespace Digipolis.Web.Guidelines.Api.Data
 {
     public class ValueRepository : IValueRepository
     {
-        private readonly IErrorManager _errorManager;
         private readonly DataContext _context;
 
         private static readonly List<Value> Values = new List<Value>(new[]
@@ -25,13 +24,12 @@ namespace Digipolis.Web.Guidelines.Api.Data
 
         private static IQueryable<Value> Table => Values.AsQueryable();
 
-        public ValueRepository(IErrorManager errorManager, DataContext context)
+        public ValueRepository(DataContext context)
         {
-            _errorManager = errorManager;
             _context = context;
         }
 
-        public IEnumerable<Value> GetAll(PageFilter queryOptions, out int total)
+        public IEnumerable<Value> GetAll(PageOptions queryOptions, out int total)
         {
             total = Table.Count();
             var query = Table.OrderByQuery(queryOptions).Skip((queryOptions.Page - 1)*queryOptions.PageSize).Take(queryOptions.PageSize);

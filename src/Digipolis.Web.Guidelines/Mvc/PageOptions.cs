@@ -3,7 +3,7 @@
     /// <summary>
     /// QueryOptions for filtering an Api
     /// </summary>
-    public class PageFilter
+    public class PageOptions
     {
         /// <summary>
         /// Sort by fields. Multiple values can be specified by comma seperation.

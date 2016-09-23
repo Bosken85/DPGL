@@ -4,12 +4,13 @@ using Swashbuckle.SwaggerGen.Application;
 
 namespace Digipolis.Web.Guidelines.Swagger
 {
-    internal class DefaultSwaggerSettings : SwaggerSettings<ResponseGuidelines>
+    public class ApiExtensionSwaggerSettings : SwaggerSettings<ResponseGuidelines>
     {
         protected override void Configuration(SwaggerGenOptions options)
         {
+            var xmlPath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, PlatformServices.Default.Application.ApplicationName + ".xml");
+            if (File.Exists(xmlPath)) options.IncludeXmlComments(xmlPath);
             options.DescribeAllEnumsAsStrings();
-            options.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, PlatformServices.Default.Application.ApplicationName + ".xml"));
             options.OperationFilter<AddFileUploadParams>();
             options.DocumentFilter<EndPointPathsAndParamsToLower>();
             options.DocumentFilter<SetVersionInPaths>();

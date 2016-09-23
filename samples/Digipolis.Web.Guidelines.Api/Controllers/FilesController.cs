@@ -23,20 +23,18 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
     public class FilesController : Controller
     {
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IErrorManager _errorManager;
         private readonly IFileLogic _fileLogic;
 
-        public FilesController(IHostingEnvironment hostingEnvironment, IErrorManager errorManager, IFileLogic fileLogic)
+        public FilesController(IHostingEnvironment hostingEnvironment, IFileLogic fileLogic)
         {
             _hostingEnvironment = hostingEnvironment;
-            _errorManager = errorManager;
             _fileLogic = fileLogic;
         }
 
         // GET: api/values
         [HttpGet]
         [ProducesResponseType(typeof(MultipartFormDataContent), 200)]
-        public IActionResult Get(int valueId, [FromQuery]PageFilter queryOptions)
+        public IActionResult Get(int valueId, [FromQuery]PageOptions queryOptions)
         {
             int total;
             var values = _fileLogic.GetAll(valueId, queryOptions, out total);

@@ -7,7 +7,7 @@ namespace Digipolis.Web.Guidelines.Api.Logic
 {
     public interface IFileLogic
     {
-        IEnumerable<FileDto> GetAll(int valueId, PageFilter queryOptions, out int total);
+        IEnumerable<FileDto> GetAll(int valueId, PageOptions queryOptions, out int total);
         FileDto GetById(int valueId, int id);
         FileDto Add(int valueId, FileDto value);
         FileDto Update(int valueId, int id, FileDto value);

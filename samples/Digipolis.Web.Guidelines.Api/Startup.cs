@@ -1,30 +1,18 @@
-﻿using System;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using Digipolis.Web.Guidelines.Api.Configuration;
 using Digipolis.Web.Guidelines.Api.Data;
 using Digipolis.Web.Guidelines.Api.Logic;
-using Digipolis.Web.Guidelines.Error;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
 using Swashbuckle.Swagger.Model;
-using Swashbuckle.SwaggerGen.Generator;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Mvc;
+using Digipolis.Web.Guidelines.Swagger;
+using Digipolis.Web.Guidelines;
 using Microsoft.Extensions.Options;
-using NuGet.Protocol.Core.v3;
 
 namespace Digipolis.Web.Guidelines.Api
 {
@@ -47,30 +35,27 @@ namespace Digipolis.Web.Guidelines.Api
         {
             // Add MVC framework with defaulted settings applied.
             services.AddMvc()
-                .AddMvcDefaults()
+                .AddApiExtensions(Configuration.GetSection("ApiExtensions"), x =>
+                {
+                    //Override settings made by the appsettings.json
+                    x.PageSize = 1;
+                    x.ExceptionHandler = new ApiExceptionHandler();
+                })
                 .AddMvcOptions(x =>
                 {
                     //Override default settings here
                     //...
                 });
 
-            //Add Api defaults AFTER AddMvc
-            services.AddApiDefaults(x =>
-            {
-                //Enable global error handling and add error models for exceptions
-                x.EnableGlobalErrorHandling<ApiExceptionHandler>();
-                x.EnableVersioning();
-            });
-
             // Inject an implementation of ISwaggerProvider with defaulted settings applied
             services.AddSwaggerGen();
-            services.ConfigureSwaggerGenDefaults().ConfigureSwaggerGen(x =>
+            services.ConfigureSwaggerGen<ApiExtensionSwaggerSettings>(x =>
             {
                 //Override default settings here
                 //...
 
                 //Specify Api Versions here
-                x.MultipleApiVersions(new Info[] { new Info
+                x.MultipleApiVersions(new[] { new Info
                 {
                     //Add Inline version
                     Version = Settings.Versions.V1,
@@ -105,11 +90,12 @@ namespace Digipolis.Web.Guidelines.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DataContext dataContext)
         {
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             // Enable Api Defaults
-            app.UseApiDefaults();
+            app.UseApiExtensions();
 
             //app.UseStaticFiles();
             app.UseMvc();
