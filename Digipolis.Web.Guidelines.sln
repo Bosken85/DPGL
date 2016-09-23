@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{3B22
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Digipolis.Web.Guidelines.Api", "samples\Digipolis.Web.Guidelines.Api\Digipolis.Web.Guidelines.Api.xproj", "{68798A71-C44A-48CE-8FD9-CEA75EE3299C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{726C3BCD-EBD2-4F1C-A953-BFA04CB63AF0}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Digipolis.Web.Guidelines.UnitTests", "test\Digipolis.Web.Guidelines.UnitTests\Digipolis.Web.Guidelines.UnitTests.xproj", "{7C82101E-97F5-4E2E-B62C-0B832AAE2E06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,10 @@ Global
 		{68798A71-C44A-48CE-8FD9-CEA75EE3299C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68798A71-C44A-48CE-8FD9-CEA75EE3299C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68798A71-C44A-48CE-8FD9-CEA75EE3299C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C82101E-97F5-4E2E-B62C-0B832AAE2E06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C82101E-97F5-4E2E-B62C-0B832AAE2E06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C82101E-97F5-4E2E-B62C-0B832AAE2E06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C82101E-97F5-4E2E-B62C-0B832AAE2E06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,5 +46,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{68A1B13C-570E-4149-B34C-55722CD5AC47} = {3445CDEB-6D15-45DF-BF15-4AA50089BAE3}
 		{68798A71-C44A-48CE-8FD9-CEA75EE3299C} = {3B229DD3-199C-408B-9280-3AF21B81CE1B}
+		{7C82101E-97F5-4E2E-B62C-0B832AAE2E06} = {726C3BCD-EBD2-4F1C-A953-BFA04CB63AF0}
 	EndGlobalSection
 EndGlobal
