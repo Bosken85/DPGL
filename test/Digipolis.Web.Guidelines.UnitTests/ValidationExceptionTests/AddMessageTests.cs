@@ -12,7 +12,7 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
         [Fact]
         private void MessageIsAddedWithEmptyKey()
         {
-            var ex = new ValidationException(new ModelStateDictionary());
+            var ex = new ValidationException();
             ex.AddMessage("aMessage");
             Assert.Equal(1, ex.ModelState.Count);
             Assert.Collection(ex.ModelState.Keys, x => Assert.Empty(x));
@@ -22,7 +22,7 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
         [Fact]
         private void TwoMessagesAreAddedWithEmptyKey()
         {
-            var ex = new ValidationException(new ModelStateDictionary());
+            var ex = new ValidationException();
             ex.AddMessage("aMessage1");
             ex.AddMessage("aMessage2");
             Assert.Equal(1, ex.ModelState.Count);
@@ -34,7 +34,7 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
         [Fact]
         private void MessageIsAddedWithKey()
         {
-            var ex = new ValidationException(new ModelStateDictionary());
+            var ex = new ValidationException();
             ex.AddMessage("aKey", "aMessage");
             Assert.Equal(1, ex.ModelState.Count);
             Assert.Collection(ex.ModelState.Keys, x => Assert.Equal("aKey", x));
@@ -44,7 +44,7 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
         [Fact]
         private void TwoMessagesAreAddedWithTwoKeys()
         {
-            var ex = new ValidationException(new ModelStateDictionary());
+            var ex = new ValidationException();
             ex.AddMessage("key1", "aMessage1");
             ex.AddMessage("key2", "aMessage2");
             Assert.Equal(2, ex.ModelState.Count);
@@ -56,7 +56,7 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
         [Fact]
         private void NullMessageIsNotAdded()
         {
-            var ex = new ValidationException(new ModelStateDictionary());
+            var ex = new ValidationException();
             ex.AddMessage(null);
             Assert.Empty(ex.ModelState);
         }

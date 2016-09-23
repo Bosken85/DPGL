@@ -25,6 +25,7 @@ namespace Digipolis.Web.Guidelines.Swagger
             ControllerAttributes = context.ApiDescription.GetControllerAttributes().OfType<Attribute>();
             CombinedAttributes = ActionAttributes.Union(ControllerAttributes);
             ConfigureResponses(operation, context);
+            ExcludeSwaggerResonse(operation);
         }
 
         protected virtual void ConfigureResponses(Operation operation, OperationFilterContext context)
@@ -136,6 +137,19 @@ namespace Digipolis.Web.Guidelines.Swagger
             operation.Responses["200"].Schema = context.SchemaRegistry.GetOrRegister(typeof(VersionInfo));
             operation.Summary = "Get the version of the application";
             operation.Produces.Add("application/json");
+        }
+
+        private void ExcludeSwaggerResonse(Operation operation)
+        {
+            var excludes = CombinedAttributes.OfType<ExcludeSwaggerResonseAttribute>();
+            if (!excludes.Any()) return;
+
+            var codes = excludes.SelectMany(x => x.HttpCodes).Distinct().Select(x=> x.ToString());
+            foreach (var code in codes)
+            {
+                if (!operation.Responses.ContainsKey(code)) continue;
+                operation.Responses.Remove(code);
+            }
         }
     }
 }

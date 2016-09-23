@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Digipolis.Web.Guidelines.Error;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Xunit;
@@ -10,9 +11,7 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
         [Fact]
         private void ModelStateIsSet()
         {
-            var modelstate = new ModelStateDictionary();
-            modelstate.AddModelError("aKey", "aMessage");
-
+            var modelstate = new Dictionary<string, IEnumerable<string>> {{"aKey", new[] {"aMessage"}}};
             var ex = new ValidationException(modelstate);
 
             Assert.Equal(1, ex.ModelState.Count);
@@ -37,7 +36,7 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
         [Fact]
         private void MessageIsSet()
         {
-            var modelstate = new ModelStateDictionary();
+            var modelstate = new Dictionary<string, IEnumerable<string>>();
             var ex = new ValidationException(modelstate, "aMessage");
             Assert.Equal("aMessage", ex.Message);
         }
@@ -52,7 +51,7 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
         [Fact]
         private void ExceptionIsSet()
         {
-            var modelstate = new ModelStateDictionary();
+            var modelstate = new Dictionary<string, IEnumerable<string>>();
             var innerEx = new Exception();
             var ex = new ValidationException(modelstate, "aMessage", innerEx);
             Assert.Same(innerEx, ex.InnerException);
@@ -69,7 +68,7 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
         [Fact]
         private void MessageIsAddedToModelState()
         {
-            var modelstate = new ModelStateDictionary();
+            var modelstate = new Dictionary<string, IEnumerable<string>>();
             var ex = new ValidationException(modelstate, "aMessage");
             Assert.Equal(1, ex.ModelState.Count);
             Assert.Collection(ex.ModelState.Keys, x => Assert.Empty(x));

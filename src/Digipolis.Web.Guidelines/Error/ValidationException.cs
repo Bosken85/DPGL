@@ -12,7 +12,7 @@ namespace Digipolis.Web.Guidelines.Error
         public ValidationException(Dictionary<string, IEnumerable<string>> modelState = null, string message = null, Exception exception = null)
             : base(message, exception)
         {
-            if ( modelState != null ) ModelState = modelState.ToDictionary(x => x.Key, x => x.Value.Errors.Select(e => e.ErrorMessage));
+            ModelState = modelState ?? new Dictionary<string, IEnumerable<string>>();
             AddMessage(message);
         }
 
@@ -23,29 +23,27 @@ namespace Digipolis.Web.Guidelines.Error
 
         public void AddMessage(string message)
         {
-            if ( !String.IsNullOrWhiteSpace(message) )
-                AddMessages(String.Empty, new string[] { message });
+            if (!string.IsNullOrWhiteSpace(message))
+                AddMessages(string.Empty, new[] { message });
         }
 
         public void AddMessage(string key, string message)
         {
-            if ( !String.IsNullOrWhiteSpace(message))
-                AddMessages(key, new string[] { message });
+            if (!string.IsNullOrWhiteSpace(message))
+                AddMessages(key, new[] { message });
         }
 
         public void AddMessages(string key, IEnumerable<string> messages)
         {
-            if ( messages.Count() == 0 ) return;
+            if (!messages.Any()) return;
 
-            if ( ModelState.ContainsKey(key) )
+            if (ModelState.ContainsKey(key))
             {
                 var modelMessages = new List<string>(ModelState[key]);
                 modelMessages.AddRange(messages);
                 ModelState[key] = modelMessages;
             }
-            else
-                ModelState.Add(key, messages);
-            ModelState = modelState ?? new Dictionary<string, IEnumerable<string>>();
+            else ModelState.Add(key, messages);
         }
     }
 }

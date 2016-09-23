@@ -109,6 +109,7 @@ namespace Digipolis.Web.Guidelines.Api.Controllers
         [HttpPut("{id}")]
         [ValidateModel]
         [Versions(Settings.Versions.V1, Settings.Versions.V2)]
+        [ExcludeSwaggerResonse((int)HttpStatusCode.NotFound)]
         public IActionResult Put(int id, [FromBody, Required] ValueDto value)
         {
             try

@@ -166,9 +166,9 @@ namespace Digipolis.Web.Guidelines
         {
             var settings = app.ApplicationServices.GetService<IOptions<ApiExtensionOptions>>();
             var httpContextAccessor = app.ApplicationServices.GetService<IActionContextAccessor>();
-            if (settings?.Value?.EnableGlobalErrorHandling != true || httpContextAccessor == null) return;
-            app.UseMiddleware<HttpResponseMiddleware>();
-            Helpers.UrlHelper.Configure(httpContextAccessor);
+
+            if (settings?.Value?.EnableGlobalErrorHandling == true) app.UseMiddleware<HttpResponseMiddleware>();
+            if (httpContextAccessor != null) Helpers.UrlHelper.Configure(httpContextAccessor);
         }
     }
 }
