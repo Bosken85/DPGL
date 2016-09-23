@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Digipolis.Web.Guidelines.Error;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Xunit;
@@ -17,8 +16,8 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
             var ex = new ValidationException(modelstate);
 
             Assert.Equal(1, ex.ModelState.Count);
-            Assert.True(ex.ModelState.Keys.Contains("aKey"));
-            Assert.True(ex.ModelState.Values.Any(x => x.Contains("aMessage")));
+            Assert.Collection(ex.ModelState.Keys, x => Assert.Equal("aKey", x));
+            Assert.Collection(ex.ModelState.Values, x => Assert.Collection(x, y => Assert.Equal("aMessage", y)));
         }
 
         [Fact]
@@ -73,7 +72,8 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
             var modelstate = new ModelStateDictionary();
             var ex = new ValidationException(modelstate, "aMessage");
             Assert.Equal(1, ex.ModelState.Count);
-            Assert.True(ex.ModelState.Values.Any(x => x.Contains("aMessage")));
+            Assert.Collection(ex.ModelState.Keys, x => Assert.Empty(x));
+            Assert.Collection(ex.ModelState.Values, x => Assert.Collection(x, y => Assert.Equal("aMessage", y)));
         }
 
         [Fact]
@@ -81,7 +81,8 @@ namespace Digipolis.Web.Guidelines.UnitTests.ValidationExceptionTests
         {
             var ex = new ValidationException("aMessage");
             Assert.Equal(1, ex.ModelState.Count);
-            Assert.True(ex.ModelState.Values.Any(x => x.Contains("aMessage")));
+            Assert.Collection(ex.ModelState.Keys, x => Assert.Empty(x));
+            Assert.Collection(ex.ModelState.Values, x => Assert.Collection(x, y => Assert.Equal("aMessage", y)));
         }
 
     }
