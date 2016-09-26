@@ -68,10 +68,11 @@ namespace Digipolis.Web.Guidelines
 
             if (apiOptions.EnableGlobalErrorHandling)
             {
-                if (apiOptions.ExceptionHandler == null)
+                if (apiOptions.ExceptionMapper == null)
                     throw new ArgumentNullException(nameof(exception), "An exceptionhadler must be provided on AddApiExtensions when global error handling is turned on.");
 
-                builder.Services.AddSingleton<IExceptionHandler>(apiOptions.ExceptionHandler);
+                builder.Services.AddSingleton<IExceptionMapper>(apiOptions.ExceptionMapper);
+                builder.Services.AddSingleton<IExceptionHandler, ExceptionHandler>();
             }
 
             if (apiOptions.EnableVersioning)

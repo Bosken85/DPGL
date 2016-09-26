@@ -8,7 +8,7 @@ using ValidationException = Digipolis.Web.Guidelines.Error.ValidationException;
 
 namespace Digipolis.Web.Guidelines.Api.Configuration
 {
-    public class ApiExceptionHandler : ExceptionHandler
+    public class ApiExceptionHandler : ExceptionMapper
     {
         public override void Configure()
         {

@@ -12,29 +12,23 @@ namespace Digipolis.Web.Guidelines.Error
     public class GlobalExceptionFilter : ExceptionFilterAttribute
     {
         private readonly IExceptionHandler _handler;
-        private readonly ILogger _logger;
 
-        public GlobalExceptionFilter(ILoggerFactory logger, IExceptionHandler handler)
+        public GlobalExceptionFilter(IExceptionHandler handler)
         {
             _handler = handler;
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
+        }
 
-            _logger = logger.CreateLogger("Application error");
+        public override async Task OnExceptionAsync(ExceptionContext context)
+        {
+            if(_handler == null) return;
+            await _handler.HandleAsync(context.HttpContext, context.Exception);
+            context.ExceptionHandled = true;
         }
 
         public override void OnException(ExceptionContext context)
         {
-            var response = _handler?.Resolve(context.Exception);
-            if (response == null) return;
-            context.Result = new ObjectResult(response)
-            {
-                StatusCode = response.Status,
-                DeclaredType = response.GetType()
-            };
-            _logger?.LogError(response.Identifier.ToString(), context.Exception);
+            if(_handler == null) return;
+            _handler.Handle(context.HttpContext, context.Exception);
             context.ExceptionHandled = true;
         }
     }

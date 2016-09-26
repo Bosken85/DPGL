@@ -7,13 +7,13 @@ namespace Digipolis.Web.Guidelines.Error
 {
     public class ValidationException : Exception
     {
-        public Dictionary<string, IEnumerable<string>> ModelState { get; private set; } = new Dictionary<string, IEnumerable<string>>();
+        public Dictionary<string, IEnumerable<string>> ModelState { get; private set; }
 
         public ValidationException(Dictionary<string, IEnumerable<string>> modelState = null, string message = null, Exception exception = null)
             : base(message, exception)
         {
             ModelState = modelState ?? new Dictionary<string, IEnumerable<string>>();
-            AddMessage(message);
+            if(!string.IsNullOrWhiteSpace(message)) AddMessage(message);
         }
 
         public ValidationException(string message, Exception exception = null) : base(message, exception)
@@ -33,9 +33,14 @@ namespace Digipolis.Web.Guidelines.Error
                 AddMessages(key, new[] { message });
         }
 
+        public void AddMessages(IEnumerable<string> messages)
+        {
+            AddMessages(string.Empty, messages);
+        }
+
         public void AddMessages(string key, IEnumerable<string> messages)
         {
-            if (!messages.Any()) return;
+            if (messages == null || !messages.Any()) return;
 
             if (ModelState.ContainsKey(key))
             {

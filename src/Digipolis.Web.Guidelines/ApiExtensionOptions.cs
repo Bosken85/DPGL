@@ -13,7 +13,7 @@ namespace Digipolis.Web.Guidelines
         public bool EnableGlobalErrorHandling { get; set; }
 
         [JsonIgnore]
-        public IExceptionHandler ExceptionHandler { get; set; }
+        public IExceptionMapper ExceptionMapper { get; set; }
 
         public int PageSize { get; set; }
     }

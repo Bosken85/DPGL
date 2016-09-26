@@ -41,6 +41,9 @@ namespace Digipolis.Web.Guidelines.Error
 
         public Error(Guid identifier, Dictionary<string, object> extraParameters = null)
         {
+            if (identifier == default(Guid))
+                throw new ArgumentException("An empty Guid is not allowed", nameof(identifier));
+
             Identifier = identifier;
             ExtraParameters = extraParameters ?? new Dictionary<string, object>();
         }

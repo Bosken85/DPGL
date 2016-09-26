@@ -26,42 +26,23 @@ namespace Digipolis.Web.Guidelines.Mvc
         public async Task Invoke(HttpContext context)
         {
             var handler = context.RequestServices.GetService<IExceptionHandler>();
-            var options = context.RequestServices.GetService<IOptions<MvcJsonOptions>>();
+            if(handler == null) return;
 
             try
             {
                 await this.next.Invoke(context);
                 if (context.Response.StatusCode == (int)HttpStatusCode.Unauthorized)
                 {
-                    var error = handler?.Resolve(new UnauthorizedAccessException());
-                    if (error == null) return;
-                    var json = JsonConvert.SerializeObject(error, Formatting.None, options.Value.SerializerSettings);
-                    context.Response.ContentType = "application/json";
-                    context.Response.StatusCode = error.Status;
-                    await context.Response.WriteAsync(json);
+                    await handler.HandleAsync(context, new UnauthorizedAccessException());
                 }
                 if (context.Response.StatusCode == (int)HttpStatusCode.NotFound)
                 {
-                    var error = handler?.Resolve(new UnauthorizedAccessException());
-                    if (error == null) return;
-                    var json = JsonConvert.SerializeObject(error, Formatting.None, options.Value.SerializerSettings);
-                    context.Response.ContentType = "application/json";
-                    context.Response.StatusCode = error.Status;
-                    await context.Response.WriteAsync(json);
+                    await handler.HandleAsync(context, new UnauthorizedAccessException());
                 }
             }
             catch (Exception ex)
             {
-                var logger = context.RequestServices.GetService<ILoggerFactory>()?.CreateLogger("Application error");
-
-                var error = handler?.Resolve(ex);
-                if (error == null) return;
-                context.Response.Clear();
-                context.Response.StatusCode = error.Status;
-                context.Response.ContentType = "application/problem+json";
-                var json = JsonConvert.SerializeObject(error, options.Value.SerializerSettings);
-                await context.Response.WriteAsync(json);
-                logger?.LogError(error.Identifier.ToString(), ex);
+                await handler.HandleAsync(context, ex);
             }
         }
     }

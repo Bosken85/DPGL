@@ -14,13 +14,13 @@ namespace Digipolis.Web.Guidelines.Mvc
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (context.ModelState.IsValid) return;
-            throw new ValidationException(context.ModelState.ToDictionary(x => x.Key, x => x.Value.Errors.Select(e => e.ErrorMessage)));
+            else throw new ValidationException(context.ModelState.ToDictionary(x => x.Key, x => x.Value.Errors.Select(e => e.ErrorMessage)));
         }
 
-        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context.ModelState.IsValid) next();
-            throw new ValidationException(context.ModelState.ToDictionary(x => x.Key, x => x.Value.Errors.Select(e => e.ErrorMessage)));
+            if (context.ModelState.IsValid) await next();
+            else throw new ValidationException(context.ModelState.ToDictionary(x => x.Key, x => x.Value.Errors.Select(e => e.ErrorMessage)));
         }
     }
 }

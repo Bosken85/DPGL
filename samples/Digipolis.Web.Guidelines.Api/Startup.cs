@@ -39,7 +39,7 @@ namespace Digipolis.Web.Guidelines.Api
                 {
                     //Override settings made by the appsettings.json
                     x.PageSize = 1;
-                    x.ExceptionHandler = new ApiExceptionHandler();
+                    x.ExceptionMapper = new ApiExceptionHandler();
                 })
                 .AddMvcOptions(x =>
                 {
