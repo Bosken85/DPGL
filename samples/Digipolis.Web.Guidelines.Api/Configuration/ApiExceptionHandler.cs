@@ -10,7 +10,7 @@ namespace Digipolis.Web.Guidelines.Api.Configuration
 {
     public class ApiExceptionHandler : ExceptionMapper
     {
-        public override void Configure()
+        protected override void Configure()
         {
             CreateMap<ValidationException>((x, ex) =>
             {
@@ -25,11 +25,7 @@ namespace Digipolis.Web.Guidelines.Api.Configuration
                 x.Title = "This function cannot be called on the api";
             });
 
-            CreateMap<UnauthorizedAccessException>((x, ex) =>
-            {
-                x.Status = (int)HttpStatusCode.Unauthorized;
-                x.Title = "Access restricted";
-            });
+            CreateMap<UnauthorizedAccessException>((int)HttpStatusCode.Forbidden);
 
             CreateMap<HttpRequestException>((x, ex) =>
             {
@@ -39,7 +35,7 @@ namespace Digipolis.Web.Guidelines.Api.Configuration
 
         }
 
-        public override void CreateDefaultMap(Error.Error error, Exception exception)
+        protected override void CreateDefaultMap(Error.Error error, Exception exception)
         {
             error.Status = (int)HttpStatusCode.InternalServerError;
             error.Title = "Woeps";

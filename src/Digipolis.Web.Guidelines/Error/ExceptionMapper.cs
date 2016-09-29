@@ -17,11 +17,16 @@ namespace Digipolis.Web.Guidelines.Error
             Configure();
         }
 
-        public abstract void Configure();
+        protected abstract void Configure();
 
-        public abstract void CreateDefaultMap(Error error, Exception exception);
+        protected abstract void CreateDefaultMap(Error error, Exception exception);
 
-        public void CreateMap<TException>(Action<Error, TException> configError) where TException : Exception
+        protected void CreateMap<TException>(int statusCode) where TException : Exception
+        {
+            CreateMap<TException>((x, y) => x.Status = statusCode);
+        }
+
+        protected void CreateMap<TException>(Action<Error, TException> configError) where TException : Exception
         {
             Action<Error,Exception> action = (x, y) => configError(x, (TException)y);
             _errorMappings.TryAdd(typeof(TException), action);

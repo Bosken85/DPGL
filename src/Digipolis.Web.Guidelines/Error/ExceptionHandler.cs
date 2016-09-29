@@ -28,11 +28,14 @@ namespace Digipolis.Web.Guidelines.Error
         {
             var error = _mapper?.Resolve(ex);
             if (error == null) return;
-            context.Response.Clear();
-            context.Response.StatusCode = error.Status;
-            context.Response.ContentType = "application/json";
-            var json = JsonConvert.SerializeObject(error, _options?.Value?.SerializerSettings ?? new JsonSerializerSettings());
-            await context.Response.WriteAsync(json);
+            if (!string.IsNullOrWhiteSpace(error.Title) || !string.IsNullOrWhiteSpace(error.Code) || error.Type != null || error.ExtraParameters?.Any() == true)
+            {
+                context.Response.Clear();
+                context.Response.ContentType = "application/json";
+                var json = JsonConvert.SerializeObject(error, _options?.Value?.SerializerSettings ?? new JsonSerializerSettings());
+                await context.Response.WriteAsync(json);
+            }
+            if(error.Status != default(int)) context.Response.StatusCode = error.Status;
             LogException(error, ex);
         }
 
@@ -40,11 +43,14 @@ namespace Digipolis.Web.Guidelines.Error
         {
             var error = _mapper?.Resolve(ex);
             if (error == null) return;
-            context.Response.Clear();
-            context.Response.StatusCode = error.Status;
-            context.Response.ContentType = "application/json";
-            var json = JsonConvert.SerializeObject(error, _options?.Value?.SerializerSettings ?? new JsonSerializerSettings());
-            context.Response.WriteAsync(json).Wait();
+            if (!string.IsNullOrWhiteSpace(error.Title) || !string.IsNullOrWhiteSpace(error.Code) || error.Type != null || error.ExtraParameters?.Any() == true)
+            {
+                context.Response.Clear();
+                context.Response.ContentType = "application/json";
+                var json = JsonConvert.SerializeObject(error, _options?.Value?.SerializerSettings ?? new JsonSerializerSettings());
+                context.Response.WriteAsync(json).Wait();
+            }
+            if(error.Status != default(int)) context.Response.StatusCode = error.Status;
             LogException(error, ex);
         }
 
