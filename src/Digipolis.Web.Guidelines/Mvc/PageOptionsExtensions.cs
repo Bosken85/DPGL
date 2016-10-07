@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Digipolis.Web.Guidelines.Helpers;
@@ -9,6 +10,32 @@ namespace Digipolis.Web.Guidelines.Mvc
 {
     public static class PageOptionsExtensions
     {
+        private static Link GenerateLink(PageOptions query, int page, string actionName, string controllerName, object routeValues = null)
+        {
+            var values = new RouteValueDictionary(routeValues)
+            {
+                ["Page"] = page,
+                ["PageSize"] = query.PageSize,
+                ["Sort"] = query.Sort
+            };
+
+            var url = LinkProvider.AbsoluteAction(actionName, controllerName, values);
+            return new Link(url);
+        }
+
+        private static Link GenerateLink(PageOptions query, int page, string routeName, object routeValues = null)
+        {
+            var values = new RouteValueDictionary(routeValues)
+            {
+                ["Page"] = page,
+                ["PageSize"] = query.PageSize,
+                ["Sort"] = query.Sort
+            };
+
+            var url = LinkProvider.AbsoluteRoute(routeName, values);
+            return new Link(url);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -22,40 +49,21 @@ namespace Digipolis.Web.Guidelines.Mvc
         /// <returns></returns>
         public static PagedResult<T> ToPagedResult<T>(this PageOptions query, IEnumerable<T> data, int total, string actionName, string controllerName, object routeValues = null) where T : class, new()
         {
-            var result = new PagedResult<T>(query.Page, query.PageSize, total, data);
-            var values = new RouteValueDictionary(routeValues)
+            if (string.IsNullOrWhiteSpace(actionName)) throw new ArgumentNullException(nameof(actionName));
+            if (string.IsNullOrWhiteSpace(controllerName)) throw new ArgumentNullException(nameof(controllerName));
+
+            var result = new PagedResult<T>(query.Page, query.PageSize, total, data)
             {
-                ["Page"] = query.Page,
-                ["PageSize"] = query.PageSize,
-                //["Fields"] = query.Fields,
-                ["Sort"] = query.Sort
+                Links =
+                {
+                    First = GenerateLink(query, 1, actionName, controllerName, routeValues),
+                    Self = GenerateLink(query, query.Page, actionName, controllerName, routeValues)
+                }
             };
+            result.Links.Last = GenerateLink(query, result.Page.TotalPages, actionName, controllerName, routeValues);
 
-            values["Page"] = 1;
-            var first = UrlHelper.AbsoluteAction(actionName, controllerName, values);
-            result.Links.First = new Link(first);
-
-            values["Page"] = query.Page - 1;
-            if (query.Page - 1 > 0)
-            {
-                var previous = UrlHelper.AbsoluteAction(actionName, controllerName, values);
-                result.Links.Previous = new Link(previous);
-            }
-
-            values["Page"] = query.Page;
-            var self = UrlHelper.AbsoluteAction(actionName, controllerName, values);
-            result.Links.Self = new Link(self);
-
-            values["Page"] = query.Page + 1;
-            if (query.Page + 1 < result.Page.TotalPages)
-            {
-                var next = UrlHelper.AbsoluteAction(actionName, controllerName, values);
-                result.Links.Next = new Link(next);
-            }
-
-            values["Page"] = result.Page.TotalPages;
-            var last = UrlHelper.AbsoluteAction(actionName, controllerName, values);
-            result.Links.Last = new Link(last);
+            if (query.Page - 1 > 0) result.Links.Previous = GenerateLink(query, query.Page - 1, actionName, controllerName, routeValues);
+            if (query.Page + 1 < result.Page.TotalPages) result.Links.Next = GenerateLink(query, query.Page + 1, actionName, controllerName, routeValues);
 
             return result;
         }
@@ -72,58 +80,38 @@ namespace Digipolis.Web.Guidelines.Mvc
         /// <returns></returns>
         public static PagedResult<T> ToPagedResult<T>(this PageOptions query, IEnumerable<T> data, int total, string routeName, object routeValues = null) where T : class, new()
         {
-            var result = new PagedResult<T>(query.Page, query.PageSize, total, data);
-            var values = new RouteValueDictionary(routeValues)
+            if (string.IsNullOrWhiteSpace(routeName)) throw new ArgumentNullException(nameof(routeName));
+
+            var result = new PagedResult<T>(query.Page, query.PageSize, total, data)
             {
-                ["Page"] = query.Page,
-                ["PageSize"] = query.PageSize,
-                //["Fields"] = query.Fields,
-                ["Sort"] = query.Sort
+                Links =
+                {
+                    First = GenerateLink(query, 1, routeName, routeValues),
+                    Self = GenerateLink(query, query.Page, routeName, routeValues)
+                }
             };
+            result.Links.Last = GenerateLink(query, result.Page.TotalPages, routeName, routeValues);
 
-            values["Page"] = 1;
-            var first = UrlHelper.AbsoluteRoute(routeName, values);
-            result.Links.First = new Link(first);
-
-            values["Page"] = query.Page - 1;
-            if (query.Page - 1 > 0)
-            {
-                var previous = UrlHelper.AbsoluteRoute(routeName, values);
-                result.Links.Previous = new Link(previous);
-            }
-
-            values["Page"] = query.Page;
-            var self = UrlHelper.AbsoluteRoute(routeName, values);
-            result.Links.Self = new Link(self);
-
-            values["Page"] = query.Page + 1;
-            if (query.Page + 1 < result.Page.TotalPages)
-            {
-                var next = UrlHelper.AbsoluteRoute(routeName, values);
-                result.Links.Next = new Link(next);
-            }
-
-            values["Page"] = result.Page.TotalPages;
-            var last = UrlHelper.AbsoluteRoute(routeName, values);
-            result.Links.Last = new Link(last);
+            if (query.Page - 1 > 0) result.Links.Previous = GenerateLink(query, query.Page - 1,  routeName, routeValues);
+            if (query.Page + 1 < result.Page.TotalPages) result.Links.Next = GenerateLink(query, query.Page + 1, routeName, routeValues);
 
             return result;
         }
 
-        public static IQueryable<T> OrderByQuery<T>(this IQueryable<T> source, PageOptions query) where T : class
+        public static IOrderedQueryable<T> OrderByQuery<T>(this IQueryable<T> source, params string[] orderFields) where T : class
         {
-            if(query.Sort == null || !query.Sort.Any()) return source;
+            if (orderFields == null || !orderFields.Any()) return source.OrderBy<T, object>(x => null);
 
             IOrderedQueryable<T> result = null;
-            for (int i = 0; i < query.Sort.Length; i++)
+            for (int i = 0; i < orderFields.Length; i++)
             {
-                var descending = query.Sort[i].StartsWith("-");
-                var field = descending ? query.Sort[i].Remove(0, 1) : query.Sort[i];
+                var descending = orderFields[i].StartsWith("-");
+                var field = descending ? orderFields[i].Remove(0, 1) : orderFields[i];
                 if (i == 0) result = descending ? source.OrderByDescending(field) : source.OrderBy(field);
                 else result = descending ? result.ThenByDescending(field) : result.ThenBy(field);
             }
             MethodCallExpression expression = (result != null ? result.Expression : source.Expression) as MethodCallExpression;
-            return source.Provider.CreateQuery<T>(expression);
+            return (IOrderedQueryable<T>)source.Provider.CreateQuery<T>(expression);
         }
     }
 }

@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Digipolis.Web.Guidelines.JsonConverters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Swashbuckle.SwaggerGen.Application;
 using System.Linq;
 using Digipolis.Web.Guidelines.Error;
@@ -17,14 +14,10 @@ using Digipolis.Web.Guidelines.Mvc;
 using Digipolis.Web.Guidelines.Swagger;
 using Digipolis.Web.Guidelines.Versioning;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.Swagger.Model;
-using Swashbuckle.SwaggerGen.Generator;
 
 namespace Digipolis.Web.Guidelines
 {
@@ -45,11 +38,15 @@ namespace Digipolis.Web.Guidelines
 
         public static IMvcBuilder AddApiExtensions(this IMvcBuilder builder, IConfigurationSection config = null, Action<ApiExtensionOptions> build = null, Type exception = null)
         {
+            var apiOptions = new ApiExtensionOptions();
+
+            #region Include services needed for building uri's in the paging object
+
             builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-            var apiOptions = new ApiExtensionOptions();
-
+            #endregion
+            
             #region Register Options
 
             if (config != null && build != null) builder.Services.Configure<ApiExtensionOptions>(x => { });
@@ -66,6 +63,8 @@ namespace Digipolis.Web.Guidelines
 
             #endregion
 
+            #region Configuration from options
+
             if (apiOptions.EnableGlobalErrorHandling)
             {
                 if (apiOptions.ExceptionMapper == null)
@@ -73,6 +72,10 @@ namespace Digipolis.Web.Guidelines
 
                 builder.Services.AddSingleton<IExceptionMapper>(apiOptions.ExceptionMapper);
                 builder.Services.AddSingleton<IExceptionHandler, ExceptionHandler>();
+                builder.AddMvcOptions(options =>
+                {
+                    options.Filters.Add(typeof(GlobalExceptionFilter));
+                });
             }
 
             if (apiOptions.EnableVersioning)
@@ -80,9 +83,10 @@ namespace Digipolis.Web.Guidelines
                 builder.AddMvcOptions(options =>
                 {
                     options.Conventions.Insert(0, new RouteConvention(new RouteAttribute("{apiVersion}")));
-                    options.Filters.Add(typeof(GlobalExceptionFilter));
                 });
-            }
+            } 
+
+            #endregion
 
             builder.AddMvcOptions(options =>
             {
@@ -145,7 +149,7 @@ namespace Digipolis.Web.Guidelines
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection ConfigureSwaggerGen<TSwaggerSettings>(this IServiceCollection services, Action<SwaggerGenOptions> setupAction = null) where TSwaggerSettings : SwaggerSettings<ResponseGuidelines>, new()
+        public static IServiceCollection ConfigureSwaggerGen<TSwaggerSettings>(this IServiceCollection services, Action<SwaggerGenOptions> setupAction = null) where TSwaggerSettings : SwaggerSettings<ResponseDefinitions>, new()
         {
             var settings = new TSwaggerSettings();
             services.Configure<SwaggerGenOptions>(settings.Configure);
@@ -169,7 +173,7 @@ namespace Digipolis.Web.Guidelines
             var httpContextAccessor = app.ApplicationServices.GetService<IActionContextAccessor>();
 
             if (settings?.Value?.EnableGlobalErrorHandling == true) app.UseMiddleware<HttpResponseMiddleware>();
-            if (httpContextAccessor != null) Helpers.UrlHelper.Configure(httpContextAccessor);
+            if (httpContextAccessor != null) Helpers.LinkProvider.Configure(httpContextAccessor);
         }
     }
 }

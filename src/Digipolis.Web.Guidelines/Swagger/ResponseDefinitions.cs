@@ -11,7 +11,7 @@ using Digipolis.Web.Guidelines.Error;
 
 namespace Digipolis.Web.Guidelines.Swagger
 {
-    public class ResponseGuidelines : IOperationFilter
+    public class ResponseDefinitions : IOperationFilter
     {
         protected IEnumerable<Attribute> ActionAttributes { get; private set; }
 

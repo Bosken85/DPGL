@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Digipolis.Web.Guidelines.Helpers;
 using Swashbuckle.Swagger.Model;
 using Swashbuckle.SwaggerGen.Generator;
@@ -35,7 +36,7 @@ namespace Digipolis.Web.Guidelines.Swagger
         {
             if (parameters == null) return null;
 
-            foreach (var item in parameters)
+            foreach (var item in parameters.OfType<BodyParameter>())
             {
                 item.Name = item.Name.ToCamelCase();
             }

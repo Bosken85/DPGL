@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Digipolis.Web.Guidelines.Helpers
 {
-    internal static class UrlHelper
+    internal static class LinkProvider
     {
         private static IActionContextAccessor _httpContextAccessor;
 

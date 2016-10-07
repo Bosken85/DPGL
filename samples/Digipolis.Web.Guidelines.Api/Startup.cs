@@ -93,7 +93,7 @@ namespace Digipolis.Web.Guidelines.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            // Enable Api Defaults
+            // Enable Api Extensions
             app.UseApiExtensions();
 
             //app.UseStaticFiles();
